@@ -241,15 +241,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     radius: 30,
                     backgroundImage: AssetImage('assets/images/user.jpg'),
                   ),
-                   SizedBox(height: 10),
+                  SizedBox(height: 10),
                   Text('Login/SignUp',
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                       ),
+
+                  ),
                 ],
               ),
+
             ),
             ListTile(leading: Icon(Icons.category_outlined), title: Text('Category')),
-            ListTile(leading: Icon(Icons.trending_up), title: Text('Trending houses')),
             ListTile(leading: Icon(Icons.local_activity), title: Text('Activity')),
             ListTile(leading: Icon(Icons.wallet_outlined), title: Text('Wallet')),
             ListTile(leading: Icon(Icons.language), title: Text('Change language')),
@@ -480,20 +481,18 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-    ),
-    bottomNavigationBar: BottomNavigationBar(
-    type: BottomNavigationBarType.fixed,
-    items: const [
-    BottomNavigationBarItem(
-    icon: Icon(Icons.home_filled), label: 'Home'),
-    BottomNavigationBarItem(
-    icon: Icon(Icons.shopping_bag_rounded), label: 'Shortlist'),
-    BottomNavigationBarItem(
-    icon: Icon(Icons.bookmark_border), label: 'Booking'),
-    BottomNavigationBarItem(
-    icon: Icon(Icons.person), label: 'You'),
-    ],
-    ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home_filled), label: 'Home'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_bag_rounded), label: 'Shortlist'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person), label: 'You'),
+        ],
+      ),
 
     );
   }
