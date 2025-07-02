@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:tryhello/Login_Page/login_signup.dart';
 import 'settings_home.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -235,16 +237,21 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  SizedBox(height: 27),
-                  CircleAvatar(
+                children: [
+                  const SizedBox(height: 27),
+                  const CircleAvatar(
                     radius: 30,
                     backgroundImage: AssetImage('assets/images/user.jpg'),
                   ),
-                  SizedBox(height: 10),
-                  Text('Login/SignUp',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  const SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => LoginSignup()));
+                    },
 
+                    child: Text('Login/SignUp',
+                    style: const TextStyle(fontSize: 20, color: Colors.white,fontWeight: FontWeight.bold),
+                  ),
                   ),
                 ],
               ),
@@ -264,6 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ListTile(
               leading: Icon(Icons.settings),
               title: Text('Settings'),
+
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (_) => SettingsHome()));
               },

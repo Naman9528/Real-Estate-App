@@ -68,7 +68,7 @@ class SettingsHome extends StatelessWidget {
                 style: const TextStyle( fontSize: 15),
               ),
               trailing: const Icon(Icons.chevron_right),
-              onTap: () {
+              onTap : () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => option["page"] as Widget),
