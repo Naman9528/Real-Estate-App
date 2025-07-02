@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-
+import 'settings_home.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -216,9 +216,9 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.blueAccent,
         foregroundColor: Colors.white,
         actions: const [
-          Icon(Icons.search),
+          Icon(Icons.search_rounded),
           SizedBox(width: 25),
-          Icon(Icons.notification_important_outlined),
+          Icon(Icons.notifications_active),
           SizedBox(width: 25),
         ],
       ),
@@ -261,7 +261,14 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text('Are you a property owner ?', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
             ),
             ListTile(leading: Icon(Icons.apartment_sharp), title: Text('List your property')),
-            ListTile(leading: Icon(Icons.settings), title: Text('Settings')),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => SettingsHome()));
+              },
+            ),
+
             ListTile(leading: Icon(Icons.logout_outlined), title: Text('Logout')),
           ],
         ),
