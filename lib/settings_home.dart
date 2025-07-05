@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'settings_profile.dart';
 import 'settings_notification.dart';
@@ -15,27 +16,26 @@ class SettingsHome extends StatelessWidget {
         "icon": Icons.person,
         "title": "Profile",
         "subtitle": "Update your profile details",
-        "page": const ProfileSettings(),
+        "page": ProfileSettings(),
       },
       {
         "icon": Icons.notifications,
         "title": "Notifications",
         "subtitle": "Manage notification preferences",
-        "page": const NotificationSettings(),
+        "page": NotificationSettings(),
       },
       {
         "icon": Icons.lock,
         "title": "Security",
         "subtitle": "Secure your account",
-        "page": const SecurityPage(),
+        "page": SecurityPage(),
       },
       {
         "icon": Icons.privacy_tip,
         "title": "Privacy Policy",
         "subtitle": "Control your privacy settings",
-        "page": const PrivacyPolicyPage(),
+        "page": PrivacyPolicyPage(),
       },
-
       {
         "icon": Icons.storage,
         "title": "Data Control",
@@ -43,40 +43,74 @@ class SettingsHome extends StatelessWidget {
         "page": DataControlsPage(),
       },
     ];
+
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Settings',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+        title: const Text(
+          'Settings',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+        ),
+        backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        itemCount: settingOptions.length,
-        itemBuilder: (context, index) {
-          final option = settingOptions[index];
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 13.0), // spacing between items
-            child: ListTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+      body: Stack(
+        children: [
+          // 🌄 Background image
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/back.jpg'), // replace with your path
+                fit: BoxFit.cover,
               ),
-              leading: Icon(option["icon"] as IconData, size: 32),
-              title: Text(
-                option["title"] as String,
-                style: const TextStyle( fontSize: 23),
-              ),
-              subtitle: Text(option["subtitle"] as String,
-                style: const TextStyle( fontSize: 15),
-              ),
-              trailing: const Icon(Icons.chevron_right),
-              onTap : () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => option["page"] as Widget),
-                );
-              },
             ),
-          );
-        },
+          ),
+
+          // 💠 Glassmorphism effect
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0),
+            child: Container(
+              color: Colors.white.withOpacity(0.2),
+            ),
+          ),
+
+          // 🔘 Settings List on top of frosted layer
+          ListView.builder(
+            padding: const EdgeInsets.fromLTRB(16, 100, 16, 16),
+            itemCount: settingOptions.length,
+            itemBuilder: (context, index) {
+              final option = settingOptions[index];
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 13.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.white30),
+                  ),
+                  child: ListTile(
+                    leading: Icon(option["icon"] as IconData, size: 32, color: Colors.black),
+                    title: Text(
+                      option["title"] as String,
+                      style: const TextStyle(fontSize: 23, color: Colors.black),
+                    ),
+                    subtitle: Text(
+                      option["subtitle"] as String,
+                      style: const TextStyle(fontSize: 15, color: Colors.black),
+                    ),
+                    trailing: const Icon(Icons.chevron_right, color: Colors.black),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => option["page"] as Widget),
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

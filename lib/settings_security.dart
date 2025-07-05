@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class SecurityPage extends StatefulWidget {
@@ -47,8 +48,11 @@ class _SecurityPageState extends State<SecurityPage> {
         decoration: InputDecoration(
           labelText: label,
           filled: true,
-          fillColor: Colors.grey[200],
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+          fillColor: Colors.white.withOpacity(0.2),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
+          ),
         ),
       ),
     );
@@ -57,62 +61,94 @@ class _SecurityPageState extends State<SecurityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Security',style: TextStyle(fontWeight: FontWeight.bold),),
+        title: const Text(
+          'Security',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          onChanged: _checkFormValid,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Center(
-                child: Text(
-                  'Change password',
-                  style: TextStyle(fontSize: 20,),
-                ),
+      body: Stack(
+        children: [
+          // Background image or color
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/back.jpg'), // You can replace this with your background
+                fit: BoxFit.cover,
               ),
-              const SizedBox(height: 40),
-              _buildPasswordField('Current password', currentPasswordController),
-              _buildPasswordField('New password', newPasswordController),
-              _buildPasswordField('Re-enter new password', confirmPasswordController, isConfirm: true),
-              const Padding(
-                padding: EdgeInsets.only(top: 4, bottom: 16),
-                child: Text(
-                  'Your password must be at least 6 characters long.',
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: _isButtonEnabled
-                      ? () {
-                    if (_formKey.currentState!.validate()) {
-                      // Perform password update logic here
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Password changed successfully')),
-                      );
-                    }
-                  }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: _isButtonEnabled ? Colors.blue : Colors.blue,
-                    foregroundColor: Colors.blue,
-                  ),
-                  child: const Text('Change password',style: TextStyle(fontSize: 18, color: Colors.white),),
-                ),
-              )
-            ],
+            ),
           ),
-        ),
+
+          // Glass effect container
+          Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(25),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    color: Colors.white.withOpacity(0.15),
+                    border: Border.all(color: Colors.white.withOpacity(0.2)),
+                  ),
+                  child: Form(
+                    key: _formKey,
+                    onChanged: _checkFormValid,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          'Change password',
+                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                        const SizedBox(height: 30),
+                        _buildPasswordField('Current password', currentPasswordController),
+                        _buildPasswordField('New password', newPasswordController),
+                        _buildPasswordField('Re-enter new password', confirmPasswordController, isConfirm: true),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 4, bottom: 16),
+                          child: Text(
+                            'Your password must be at least 6 characters long.',
+                            style: TextStyle(color: Colors.white70),
+                          ),
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: _isButtonEnabled
+                                ? () {
+                              if (_formKey.currentState!.validate()) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Password changed successfully')),
+                                );
+                              }
+                            }
+                                : null,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blueAccent,
+                              foregroundColor: Colors.white,
+                            ),
+                            child: const Text('Change password', style: TextStyle(fontSize: 18)),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
