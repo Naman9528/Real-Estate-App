@@ -945,8 +945,8 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
                                             // Toggle favorite logic here
                                           },
                                           child: Icon(
-                                            favoriteProperties.contains(index) ? Icons.favorite : Icons.favorite_border,
-                                            color: favoriteProperties.contains(index) ? Colors.red : Colors.white,
+                                              Icons.favorite_border,
+                                            color: Colors.white,
                                             size: 30,
                                           ),
                                         ),
