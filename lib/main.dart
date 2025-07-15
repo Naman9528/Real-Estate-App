@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:tryhello/Login_Page/login_signup.dart';
+
+import 'ShortlistPage.dart';
 import 'propertydescriptions/villa_detail_page.dart';
 import 'settings_home.dart';
 void main() {
@@ -14,7 +16,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: '𝓡𝓮𝓷𝓽 & 𝓡𝓮𝓼𝓽',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(),
+      theme: ThemeData(primarySwatch: Colors.blue,
+      ),
       home: LogoAnimationPage(),
     );
   }
@@ -84,15 +87,33 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late int _selectedIndex;
+  List<int> favoriteProperties = [];
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+
+      // When shortlist is tapped (index 1)
+      if (index == 1) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ShortlistPage(
+              favoriteProperties: favoriteProperties
+                  .map((i) => allProperties[i])
+                  .toList(),
+            ),
+          ),
+        );
+      }
+    });
+  }
 
   @override
-  void initState() {
+  void init(){
     super.initState();
-
+    _selectedIndex = widget.selectedIndex;
     displayedProperties = List.from(allProperties);
   }
-  final List<int> favoriteProperties = [];
-
   final List<Map<String, String>> allProperties = [
     {'image': 'assets/images/villa.jpg'
       , 'price': '₹ 85,00,000', 'type': 'Villa', 'bedrooms': '4 Rooms(in Ground floor)', 'location': 'Agra',
@@ -660,10 +681,32 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
       displayedProperties = List.from(allProperties);
     });
   }
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.selectedIndex; // Ensure it's properly initialized
+    displayedProperties = List.from(allProperties);
+  }
+  void _handleItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+
+      // When shortlist is tapped (index 1)
+      if (index == 1) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ShortlistPage(
+              favoriteProperties: favoriteProperties.map((i) => allProperties[i]).toList(),
+            ),
+          ),
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    var _selectedIndex;
     return Scaffold(
       appBar: AppBar(
         title: const Text('𝓡𝓮𝓷𝓽 & 𝓡𝓮𝓼𝓽', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
@@ -703,8 +746,8 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
                     },
 
                     child: Text('Login/SignUp',
-                    style: const TextStyle(fontSize: 20, color: Colors.white,fontWeight: FontWeight.bold),
-                  ),
+                      style: const TextStyle(fontSize: 20, color: Colors.white,fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ],
               ),
@@ -850,19 +893,19 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
                         top: 20,
                         right: 20,
                         child: Text(
-                              'First book 30% off',
+                          'First book 30% off',
                           style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
 
                         ),
                       ),
 
-                  const Positioned(
-                    bottom: 20,
-                    right: 20,
-                    child: Text('Book Now',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      const Positioned(
+                        bottom: 20,
+                        right: 20,
+                        child: Text('Book Now',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
                       ),
-                  ),
                     ],
                   ),
                 ),
@@ -882,15 +925,15 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
                           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                       ),
-                  const Positioned(
-                    top: 20,
-                    left: 20,
-                    child: Text(
-                      'First book 50% off',
-                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                      const Positioned(
+                        top: 20,
+                        left: 20,
+                        child: Text(
+                          'First book 50% off',
+                          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
 
-                    ),
-                  ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -916,43 +959,49 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   InkWell(
-                                  onTap: ()
-                              {
-                              Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                              builder: (context) => VillaDetailPage(property: property),
-                              ),
-                              );
-                              },
-                                child: Stack(
-                                    children: [
-                                    ClipRRect(
-                                    borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
-                                    child: Image.asset(
-                                      property['image']!,
-                                      height: 200,
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                      Positioned(
-                                        top: 10,
-                                        right: 10,
-                                        child: GestureDetector(
-                                          onTap: () {
-
-                                            // Toggle favorite logic here
-                                          },
-                                          child: Icon(
-                                              Icons.favorite_border,
-                                            color: Colors.white,
-                                            size: 30,
+                                    onTap: ()
+                                    {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => VillaDetailPage(property: property),
+                                        ),
+                                      );
+                                    },
+                                    child: Stack(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+                                          child: Image.asset(
+                                            property['image']!,
+                                            height: 200,
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                ),
+                                        Positioned(
+                                          top: 10,
+                                          right: 10,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                if (favoriteProperties.contains(index)) {
+                                                  favoriteProperties.remove(index);
+                                                } else {
+                                                  favoriteProperties.add(index);
+                                                }
+                                              });
+                                              // Toggle favorite logic here
+                                            },
+                                            child: Icon(
+                                              favoriteProperties.contains(index) ? Icons.favorite : Icons.favorite_border,
+                                              color: favoriteProperties.contains(index) ? Colors.red : Colors.white,
+                                              size: 30,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
 
 
                                   ),
@@ -1001,6 +1050,8 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
