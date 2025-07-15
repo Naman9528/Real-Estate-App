@@ -48,7 +48,7 @@ class _AuthPageState extends State<AuthPage> {
           // Background Image
           Positioned.fill(
             child: Image.asset(
-              'assets/images/night_house.jpg', // <- Replace with your night-themed background
+              'assets/images/back.jpg', // <- Replace with your night-themed background
               fit: BoxFit.cover,
             ),
           ),
@@ -157,7 +157,7 @@ class _AuthPageState extends State<AuthPage> {
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.amberAccent,
+                            backgroundColor: Colors.blueAccent,
                             foregroundColor: Colors.black87,
                             minimumSize: const Size(double.infinity, 50),
                             shape: RoundedRectangleBorder(
@@ -204,7 +204,7 @@ class _AuthPageState extends State<AuthPage> {
                             isLogin
                                 ? "Don't have an account? Sign Up"
                                 : "Already have an account? Login",
-                            style: const TextStyle(color: Colors.amberAccent),
+                            style: const TextStyle(color: Colors.black),
                           ),
                         ),
                       ],

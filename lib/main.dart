@@ -3,11 +3,9 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:tryhello/Login_Page/login_signup.dart';
 import 'propertydescriptions/villa_detail_page.dart';
 import 'settings_home.dart';
-
 void main() {
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -30,6 +28,7 @@ class LogoAnimationPage extends StatefulWidget {
 class _LogoAnimationPageState extends State<LogoAnimationPage> with SingleTickerProviderStateMixin {
   double _opacity = 0.0;
 
+
   @override
   void initState() {
     super.initState();
@@ -40,7 +39,9 @@ class _LogoAnimationPageState extends State<LogoAnimationPage> with SingleTicker
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => HomeScreen(selectedIndex: 0,
+          allProperties: [],
+          favoriteProperties: [],)),
       );
     });
   }
@@ -67,11 +68,31 @@ class _LogoAnimationPageState extends State<LogoAnimationPage> with SingleTicker
 
 // Home screen with background image
 class HomeScreen extends StatefulWidget {
+  final int selectedIndex;
+  final List<Map<String, String>> allProperties;
+  final List<int> favoriteProperties;
+
+  const HomeScreen({
+    Key? key,
+    required this.selectedIndex,
+    required this.allProperties,
+    required this.favoriteProperties,
+  }) : super(key: key);
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+
+    displayedProperties = List.from(allProperties);
+  }
+  final List<int> favoriteProperties = [];
+
   final List<Map<String, String>> allProperties = [
     {'image': 'assets/images/villa.jpg'
       , 'price': '₹ 85,00,000', 'type': 'Villa', 'bedrooms': '4 Rooms(in Ground floor)', 'location': 'Agra',
@@ -619,12 +640,6 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
   double _maxPrice = 10000000;
   RangeValues _currentRangeValues = const RangeValues(9000, 10000000);
 
-  @override
-  void initState() {
-    super.initState();
-    displayedProperties = List.from(allProperties);
-  }
-
   void applyFilters() {
     setState(() {
       displayedProperties = allProperties.where((property) {
@@ -648,6 +663,7 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
 
   @override
   Widget build(BuildContext context) {
+    var _selectedIndex;
     return Scaffold(
       appBar: AppBar(
         title: const Text('𝓡𝓮𝓷𝓽 & 𝓡𝓮𝓼𝓽', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
@@ -834,10 +850,19 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
                         top: 20,
                         right: 20,
                         child: Text(
-                          'Book Now',
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                              'First book 30% off',
+                          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+
                         ),
                       ),
+
+                  const Positioned(
+                    bottom: 20,
+                    right: 20,
+                    child: Text('Book Now',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                  ),
                     ],
                   ),
                 ),
@@ -850,13 +875,22 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
                     children: [
                       Image.asset('assets/images/offer1.jpg', height: 180, width: double.infinity, fit: BoxFit.cover),
                       const Positioned(
-                        top: 20,
+                        bottom: 20,
                         left: 20,
                         child: Text(
                           'Book Now',
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                       ),
+                  const Positioned(
+                    top: 20,
+                    left: 20,
+                    child: Text(
+                      'First book 50% off',
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+
+                    ),
+                  ),
                     ],
                   ),
                 ),
@@ -891,7 +925,9 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
                               ),
                               );
                               },
-                                  child: ClipRRect(
+                                child: Stack(
+                                    children: [
+                                    ClipRRect(
                                     borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
                                     child: Image.asset(
                                       property['image']!,
@@ -900,6 +936,25 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
                                       fit: BoxFit.cover,
                                     ),
                                   ),
+                                      Positioned(
+                                        top: 10,
+                                        right: 10,
+                                        child: GestureDetector(
+                                          onTap: () {
+
+                                            // Toggle favorite logic here
+                                          },
+                                          child: Icon(
+                                            favoriteProperties.contains(index) ? Icons.favorite : Icons.favorite_border,
+                                            color: favoriteProperties.contains(index) ? Colors.red : Colors.white,
+                                            size: 30,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                ),
+
+
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(12.0),
@@ -949,14 +1004,30 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
         type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.home_filled), label: 'Home'),
+            icon: Icon(Icons.home_filled),
+            label: 'Home',
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_bag_rounded), label: 'Shortlist'),
+            icon: Icon(Icons.shopping_bag_rounded),
+            label: 'Shortlist',
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person), label: 'You'),
+            icon: Icon(Icons.bookmark_border),
+            label: 'Booking',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'You',
+          ),
         ],
       ),
 
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blueAccent,
+        foregroundColor: Colors.white,
+        onPressed: (){},
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
