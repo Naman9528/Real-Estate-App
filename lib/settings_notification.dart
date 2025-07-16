@@ -101,21 +101,21 @@ class _NotificationSettingsState extends State<NotificationSettings> {
       padding: const EdgeInsets.only(bottom: 8),
       child: Text(
         title,
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.white),
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black),
       ),
     );
   }
 
   Widget _buildSwitchTile(String title, List<bool> list, int index) {
     return SwitchListTile(
-      title: Text(title, style: const TextStyle(color: Colors.white)),
+      title: Text(title, style: const TextStyle(color: Colors.black)),
       value: list[index],
       onChanged: (val) {
         setState(() {
           list[index] = val;
         });
       },
-      activeColor: Colors.lightBlueAccent,
+      activeColor: Colors.blue,
       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
     );
   }

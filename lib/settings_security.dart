@@ -108,7 +108,7 @@ class _SecurityPageState extends State<SecurityPage> {
                       children: [
                         const Text(
                           'Change password',
-                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
                         ),
                         const SizedBox(height: 30),
                         _buildPasswordField('Current password', currentPasswordController),
@@ -118,7 +118,7 @@ class _SecurityPageState extends State<SecurityPage> {
                           padding: EdgeInsets.only(top: 4, bottom: 16),
                           child: Text(
                             'Your password must be at least 6 characters long.',
-                            style: TextStyle(color: Colors.white70),
+                            style: TextStyle(color: Colors.blueGrey),
                           ),
                         ),
                         SizedBox(
