@@ -5,6 +5,8 @@ import 'package:tryhello/Login_Page/login_signup.dart';
 import 'ShortlistPage.dart';
 import 'propertydescriptions/villa_detail_page.dart';
 import 'settings_home.dart';
+import 'package:tryhello/Search_Bar/SearchRentalsPage.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -713,11 +715,22 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
         centerTitle: true,
         backgroundColor: Colors.blueAccent,
         foregroundColor: Colors.white,
-        actions: const [
-          Icon(Icons.search_rounded),
-          SizedBox(width: 25),
-          Icon(Icons.notifications_active),
-          SizedBox(width: 25),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SearchRentalsPage()),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {
+              // handle notification
+            },
+          ),
         ],
       ),
       drawer: Drawer(
