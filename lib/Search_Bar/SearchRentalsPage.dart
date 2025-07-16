@@ -90,7 +90,7 @@ class _SearchRentalsPageState extends State<SearchRentalsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Search Rentals'),
+        title: Text('Search Your Property'),
         centerTitle: true,
       ),
       body: Padding(
