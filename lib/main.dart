@@ -6,6 +6,7 @@ import 'ShortlistPage.dart';
 import 'propertydescriptions/villa_detail_page.dart';
 import 'settings_home.dart';
 import 'package:tryhello/Search_Bar/SearchRentalsPage.dart';
+import 'package:tryhello/YouPage/YouPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -106,8 +107,17 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         );
+      }else if (index == 3) {
+        // Navigate to YouPage
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+            builder: (context) => YouPage(),
+            ),
+        );
       }
-    });
+    }
+    );
   }
 
   @override
@@ -1087,6 +1097,7 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
             label: 'You',
           ),
         ],
+
       ),
 
       floatingActionButton: FloatingActionButton(
