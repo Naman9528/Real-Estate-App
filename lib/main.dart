@@ -285,7 +285,7 @@ A rare opportunity to own an exclusive villa in the heart of Mumbai.
 ''',
 
     },
-    {'image': 'assets/images/agra hotel room.jpg', 'price': '₹ 9,000/day', 'type': 'Hotel rooms', 'location': 'Agra,',
+    {'image': 'assets/images/agra hotel room.jpg', 'price': '₹ 9,000/day', 'type': 'Hotel rooms', 'location': 'Agra',
       'description': '''
 Premium hotel room available in Agra, designed for comfort and relaxation.
 Priced at ₹ 9,000 per day, offering a luxurious stay near the city’s top attractions.
@@ -721,8 +721,11 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SearchRentalsPage()),
+                MaterialPageRoute(
+                  builder: (context) => SearchRentalsPage(allProperties: allProperties),
+                ),
               );
+
             },
           ),
           IconButton(

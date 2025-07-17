@@ -1,88 +1,33 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 
 class SearchRentalsPage extends StatefulWidget {
+  final List<Map<String, String>> allProperties;
+
+  const SearchRentalsPage({Key? key, required this.allProperties}) : super(key: key);
+
   @override
-  _SearchRentalsPageState createState() => _SearchRentalsPageState();
+  State<SearchRentalsPage> createState() => _SearchRentalsPageState();
 }
 
 class _SearchRentalsPageState extends State<SearchRentalsPage> {
   String searchQuery = '';
   String selectedCity = '';
-  List<String> cities = ['Mumbai', 'Delhi', 'Bangalore', 'Agra'];
-  List<String> filters = ['PG', 'Flat', '1 BHK', '2 BHK'];
-  Set<String> selectedFilters = {};
 
-  List<Map<String, String>> allProperties = [
-    {
-      'title': '2 BHK in Andheri',
-      'price': '₹20,500,000',
-      'desc': 'Semi-Furnished',
-      'city': 'Mumbai',
-    },
-    {
-      'title': '1 BHK in Koramangala',
-      'price': '₹18,00,000',
-      'desc': 'Fully Furnished',
-      'city': 'Bangalore',
-    },
-    {
-      'title': 'Flat in Connaught Place',
-      'price': '₹35,000,000',
-      'desc': 'Unfurnished',
-      'city': 'Delhi',
-    },
-    {
-      'title': '2 BHK near Taj Mahal',
-      'price': '₹80,00,000',
-      'desc': 'Basic Furnished',
-      'city': 'Agra',
-    },
-    {
-      'title': '2 BHK in Andheri',
-      'price': '₹25,000,000',
-      'desc': 'Semi-Furnished',
-      'city': 'Mumbai',
-    },
-    {
-      'title': '1 BHK in Bandra',
-      'price': '₹20,000,000',
-      'desc': 'Fully Furnished',
-      'city': 'Mumbai',
-    },
-    {
-      'title': 'Flat near India Gate',
-      'price': '₹1,000,000',
-      'desc': 'Unfurnished',
-      'city': 'Delhi',
-    },
-    {
-      'title': 'PG near IIT Delhi',
-      'price': '₹8,000/month',
-      'desc': 'Shared Room',
-      'city': 'Delhi',
-    },
-    {
-      'title': 'Villa in Koramangala',
-      'price': '₹22,000,000',
-      'desc': 'Fully Furnished',
-      'city': 'Bangalore',
-    },
-    {
-      'title': '2 BHK in Whitefield',
-      'price': '₹28,000/month',
-      'desc': 'Semi-Furnished',
-      'city': 'Bangalore',
-    },
-  ];
+  List<String> get cities {
+    return widget.allProperties
+        .map((property) => property['location'] ?? '')
+        .toSet()
+        .toList();
+  }
 
   List<Map<String, String>> get filteredProperties {
-    return allProperties.where((property) {
-      final matchQuery = property['title']!
-          .toLowerCase()
-          .contains(searchQuery.toLowerCase());
-      final matchCity = selectedCity.isEmpty ||
-          property['city']!.toLowerCase() == selectedCity.toLowerCase();
-      return matchQuery && matchCity;
+    if (searchQuery.isEmpty && selectedCity.isEmpty) return [];
+    return widget.allProperties.where((property) {
+      final location = property['location']?.toLowerCase() ?? '';
+      final queryMatch = location.contains(searchQuery.toLowerCase());
+      final cityMatch = selectedCity.isEmpty || location == selectedCity.toLowerCase();
+      return queryMatch && cityMatch;
     }).toList();
   }
 
@@ -90,96 +35,181 @@ class _SearchRentalsPageState extends State<SearchRentalsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Search Your Property'),
+        backgroundColor: Colors.blueAccent,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        title: const Text(
+          'Search Your Property',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Search Bar
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Search by city, locality, or landmark',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  searchQuery = value;
-                });
-              },
+      body: Stack(
+        children: [
+          SizedBox.expand(
+            child: Image.asset(
+              'assets/images/back.jpg',
+              fit: BoxFit.cover,
             ),
-
-            const SizedBox(height: 12),
-
-            // Filters
-            Wrap(
-              spacing: 8,
-              children: filters.map((filter) {
-                final isSelected = selectedFilters.contains(filter);
-                return FilterChip(
-                  label: Text(filter),
-                  selected: isSelected,
-                  onSelected: (selected) {
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Colors.white30),
+                      ),
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          hintText: 'Search by location',
+                          border: InputBorder.none,
+                          icon: Icon(Icons.search),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            searchQuery = value;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                DropdownButtonFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Select City',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  items: cities
+                      .map((city) => DropdownMenuItem(value: city, child: Text(city)))
+                      .toList(),
+                  onChanged: (value) {
                     setState(() {
-                      if (selected) {
-                        selectedFilters.add(filter);
-                      } else {
-                        selectedFilters.remove(filter);
-                      }
+                      selectedCity = value.toString();
                     });
                   },
-                );
-              }).toList(),
-            ),
-
-            const SizedBox(height: 12),
-
-            // Dropdown for City
-            DropdownButtonFormField(
-              decoration: InputDecoration(
-                labelText: 'Select City',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
                 ),
-              ),
-              items: cities
-                  .map((city) =>
-                  DropdownMenuItem(value: city, child: Text(city)))
-                  .toList(),
-              onChanged: (value) {
-                setState(() {
-                  selectedCity = value.toString();
-                });
-              },
+                const SizedBox(height: 16),
+                Expanded(
+                  child: filteredProperties.isEmpty
+                      ? const Center(child: Text("No results found"))
+                      : ListView.builder(
+                    itemCount: filteredProperties.length,
+                    itemBuilder: (context, index) {
+                      final property = filteredProperties[index];
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  PropertyDetailsPage(property: property),
+                            ),
+                          );
+                        },
+                        child: Card(
+                          margin: const EdgeInsets.only(bottom: 12),
+                          child: ListTile(
+                            leading: property['image'] != null
+                                ? Image.asset(
+                              property['image']!,
+                              width: 60,
+                              height: 60,
+                              fit: BoxFit.cover,
+                            )
+                                : const Icon(Icons.image_not_supported),
+                            title: Text(property['type'] ?? 'No title'),
+                            subtitle: Text(
+                              '${property['price']} • ${property['bedrooms']}',
+                            ),
+                            isThreeLine: true,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
+class PropertyDetailsPage extends StatelessWidget {
+  final Map<String, String> property;
+
+  const PropertyDetailsPage({Key? key, required this.property}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(property['type'] ?? 'Property Details'),
+        backgroundColor: Colors.blueAccent,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (property['image'] != null)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset(property['image']!),
+              ),
             const SizedBox(height: 16),
+            Text(
+              property['type'] ?? 'Unknown Type',
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              property['price'] ?? '',
+              style: const TextStyle(fontSize: 18, color: Colors.green),
+            ),
+            const SizedBox(height: 8),
+            if (property['bedrooms'] != null)
+              Text('Bedrooms: ${property['bedrooms']}'),
+            const SizedBox(height: 8),
+            if (property['location'] != null)
+              Text('Location: ${property['location']}'),
+            const SizedBox(height: 8),
+            if (property['description'] != null)
+              Text('Description: ${property['description']}'),
+            const SizedBox(height: 24),
 
-            // Results
-            Expanded(
-              child: filteredProperties.isEmpty
-                  ? Center(child: Text("No results found"))
-                  : ListView.builder(
-                itemCount: filteredProperties.length,
-                itemBuilder: (context, index) {
-                  final property = filteredProperties[index];
-                  return Card(
-                    margin: EdgeInsets.only(bottom: 12),
-                    child: ListTile(
-                      leading: Icon(Icons.home, size: 36),
-                      title: Text(property['title']!),
-                      subtitle: Text(
-                        '${property['price']} • ${property['desc']}',
-                      ),
-                      trailing:
-                      Icon(Icons.arrow_forward_ios, size: 16),
-                    ),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Booking feature coming soon!')),
                   );
                 },
+                child: const Text(
+                  'Book Now',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ],
