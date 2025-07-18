@@ -903,7 +903,6 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
     CustomScrollView(
       physics: const BouncingScrollPhysics(),
         slivers: [
-          // Sliver 1: All the widgets that come before the list
           SliverToBoxAdapter(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
