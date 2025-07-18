@@ -18,7 +18,6 @@ class LoginSignup extends StatelessWidget {
       theme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
       home: const AuthPage(),
-
     );
   }
 }
