@@ -102,7 +102,7 @@ class _SearchRentalsPageState extends State<SearchRentalsPage> {
                 const SizedBox(height: 16),
                 Expanded(
                   child: filteredProperties.isEmpty
-                      ? const Center(child: Text("No results found"))
+                      ? const Center()
                       : ListView.builder(
                     itemCount: filteredProperties.length,
                     itemBuilder: (context, index) {
