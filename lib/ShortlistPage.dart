@@ -13,7 +13,7 @@ class ShortlistPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Shortlisted Properties',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
         ),
         backgroundColor: Colors.blueAccent,
       ),

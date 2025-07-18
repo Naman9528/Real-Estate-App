@@ -48,7 +48,7 @@ class ProfileScreen extends StatelessWidget {
             );
           },
         ),
-        title: const Text('Profile', style: TextStyle(color: Colors.black),
+        title: const Text('Profile', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -68,7 +68,8 @@ class ProfileScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             ProfileTile(
-                              title: "My Transactions",
+                              title:
+                              "My Transactions",
                               icon: Icons.history,
                               onTap: () {
                                 Navigator.push(
