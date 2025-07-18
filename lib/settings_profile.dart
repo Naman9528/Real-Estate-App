@@ -36,6 +36,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
           onPressed: () => Navigator.pop(context),
         ),
         backgroundColor: Colors.transparent,
+        foregroundColor: Colors.black,
         elevation: 0,
       ),
       body: Stack(

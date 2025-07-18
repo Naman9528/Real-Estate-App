@@ -13,11 +13,12 @@ class PrivacyPolicyPage extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text("Privacy Policy", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+        title: const Text("Privacy Policy", style: TextStyle(fontWeight: FontWeight.bold,)),
         backgroundColor: Colors.transparent,
+        foregroundColor: Colors.black,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back,),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -40,7 +41,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     width: double.infinity,
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.15),
+                      color: Colors.white.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: Colors.white.withOpacity(0.2)),
                     ),
