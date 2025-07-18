@@ -22,6 +22,7 @@ class _NotificationSettingsState extends State<NotificationSettings> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        foregroundColor: Colors.black,
         elevation: 0,
         title: const Text(
           'Notifications',
@@ -34,52 +35,49 @@ class _NotificationSettingsState extends State<NotificationSettings> {
       ),
       body: Stack(
         children: [
-          // 🌄 Animated Background
-          AnimatedBackgroundpage(showPropertyCards: false), // Use the animated background
-
-          // 💠 Glassmorphic effect
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0),
-            child: Container(
-              color: Colors.black.withOpacity(0.2),
-            ),
-          ),
+          // Animated Background
+          const AnimatedBackgroundpage(showPropertyCards: false),
 
           // Content
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(16),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: Colors.white.withOpacity(0.3)),
-                  ),
-                  child: ListView(
-                    padding: const EdgeInsets.all(16),
-                    children: [
-                      _buildSectionTitle("Common"),
-                      _buildSwitchTile("App Updates", common, 0),
-                      _buildSwitchTile("Exclusive Offers & Promotions", common, 1),
-                      const Divider(height: 32),
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Colors.white.withOpacity(0.3)),
+                      ),
+                      child: ListView(
+                        padding: const EdgeInsets.all(16),
+                        children: [
+                          _buildSectionTitle("Common"),
+                          _buildSwitchTile("App Updates", common, 0),
+                          _buildSwitchTile("Exclusive Offers & Promotions", common, 1),
+                          const Divider(height: 32),
 
-                      _buildSectionTitle("Booking Notifications"),
-                      _buildSwitchTile("Booking Confirmations", booking, 0),
-                      _buildSwitchTile("Check-in Reminders", booking, 1),
-                      _buildSwitchTile("Cancellation Updates", booking, 2),
-                      const Divider(height: 32),
+                          _buildSectionTitle("Booking Notifications"),
+                          _buildSwitchTile("Booking Confirmations", booking, 0),
+                          _buildSwitchTile("Check-in Reminders", booking, 1),
+                          _buildSwitchTile("Cancellation Updates", booking, 2),
+                          const Divider(height: 32),
 
-                      _buildSectionTitle("System & Services"),
-                      _buildSwitchTile("Maintenance Alerts", system, 0),
-                      _buildSwitchTile("Payment Status Updates", system, 1),
-                      const Divider(height: 32),
+                          _buildSectionTitle("System & Services"),
+                          _buildSwitchTile("Maintenance Alerts", system, 0),
+                          _buildSwitchTile("Payment Status Updates", system, 1),
+                          const Divider(height: 32),
 
-                      _buildSectionTitle("Others"),
-                      _buildSwitchTile("Community Announcements", others, 0),
-                      _buildSwitchTile("Third-party Offers", others, 1),
-                    ],
+                          _buildSectionTitle("Others"),
+                          _buildSwitchTile("Community Announcements", others, 0),
+                          _buildSwitchTile("Third-party Offers", others, 1),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -87,6 +85,8 @@ class _NotificationSettingsState extends State<NotificationSettings> {
           ),
         ],
       ),
+
+
     );
   }
 

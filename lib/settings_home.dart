@@ -103,6 +103,7 @@ class _SettingsHomeState extends State<SettingsHome> with SingleTickerProviderSt
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
         ),
         backgroundColor: Colors.transparent,
+        foregroundColor: Colors.black,
         elevation: 0,
       ),
       body: GestureDetector(
