@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:tryhello/Login_Page/login_signup.dart';
-import 'package:tryhello/animated_backgroundpage.dart';
+import 'package:flutter/rendering.dart';
+import 'dart:math' as math;
 
+// Assuming your other import paths are correct for your project structure
+import 'package:tryhello/Login_Page/login_signup.dart';
 import 'ShortlistPage.dart';
 import 'propertydescriptions/villa_detail_page.dart';
 import 'settings_home.dart';
@@ -12,6 +13,7 @@ import 'package:tryhello/YouPage/YouPage.dart';
 void main() {
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -20,36 +22,42 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: '𝓡𝓮𝓷𝓽 & 𝓡𝓮𝓼𝓽',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blue,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.blueAccent,
+          foregroundColor: Colors.white,
+        ),
       ),
-      home: LogoAnimationPage(),
+      home: const LogoAnimationPage(),
     );
   }
 }
-// Splash screen animation page
+
 class LogoAnimationPage extends StatefulWidget {
+  const LogoAnimationPage({super.key});
+
   @override
   _LogoAnimationPageState createState() => _LogoAnimationPageState();
 }
 
-class _LogoAnimationPageState extends State<LogoAnimationPage> with SingleTickerProviderStateMixin {
+class _LogoAnimationPageState extends State<LogoAnimationPage> {
   double _opacity = 0.0;
-
 
   @override
   void initState() {
     super.initState();
     Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() => _opacity = 1.0);
+      if (mounted) setState(() => _opacity = 1.0);
     });
 
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen(selectedIndex: 0,
-          allProperties: [],
-          favoriteProperties: [],)),
-      );
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      }
     });
   }
 
@@ -73,60 +81,18 @@ class _LogoAnimationPageState extends State<LogoAnimationPage> with SingleTicker
   }
 }
 
-// Home screen with background image
 class HomeScreen extends StatefulWidget {
-  final int selectedIndex;
-  final List<Map<String, String>> allProperties;
-  final List<int> favoriteProperties;
+  const HomeScreen({Key? key}) : super(key: key);
 
-  const HomeScreen({
-    Key? key,
-    required this.selectedIndex,
-    required this.allProperties,
-    required this.favoriteProperties,
-  }) : super(key: key);
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late int _selectedIndex;
+  int _selectedIndex = 0;
   List<int> favoriteProperties = [];
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
 
-      // When shortlist is tapped (index 1)
-      if (index == 1) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ShortlistPage(
-              favoriteProperties: favoriteProperties
-                  .map((i) => allProperties[i])
-                  .toList(),
-            ),
-          ),
-        );
-      }else if (index == 3) {
-        // Navigate to YouPage
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-            builder: (context) => YouPage(),
-            ),
-        );
-      }
-    }
-    );
-  }
-
-  @override
-  void init(){
-    super.initState();
-    _selectedIndex = widget.selectedIndex;
-    displayedProperties = List.from(allProperties);
-  }
+  // Your full, original list of properties
   final List<Map<String, String>> allProperties = [
     {'image': 'assets/images/villa.jpg'
       , 'price': '₹ 85,00,000', 'type': 'Villa', 'bedrooms': '4 Rooms(in Ground floor)', 'location': 'Agra',
@@ -670,9 +636,38 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
   List<Map<String, String>> displayedProperties = [];
   String? selectedLocation;
   String? selectedType;
-  double _minPrice = 9000;
-  double _maxPrice = 10000000;
+  final double _minPrice = 9000;
+  final double _maxPrice = 10000000;
   RangeValues _currentRangeValues = const RangeValues(9000, 10000000);
+
+  late final List<Widget> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = 0;
+    displayedProperties = List.from(allProperties);
+
+    _pages = [
+      buildHomeContent(),
+      ShortlistPage(favoriteProperties: getFavoriteProperties()),
+      const Center(child: Text("Bookings Page", style: TextStyle(fontSize: 24))),
+      const YouPage(),
+    ];
+  }
+
+  List<Map<String, String>> getFavoriteProperties() {
+    return favoriteProperties.map((index) => allProperties[index]).toList();
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      if (index == 1) {
+        _pages[1] = ShortlistPage(favoriteProperties: getFavoriteProperties());
+      }
+      _selectedIndex = index;
+    });
+  }
 
   void applyFilters() {
     setState(() {
@@ -694,26 +689,13 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
       displayedProperties = List.from(allProperties);
     });
   }
-  @override
-  void initState() {
-    super.initState();
-    _selectedIndex = widget.selectedIndex; // Ensure it's properly initialized
-    displayedProperties = List.from(allProperties);
-  }
-  void _handleItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
 
-      // When shortlist is tapped (index 1)
-      if (index == 1) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ShortlistPage(
-              favoriteProperties: favoriteProperties.map((i) => allProperties[i]).toList(),
-            ),
-          ),
-        );
+  void _toggleFavorite(int originalIndex) {
+    setState(() {
+      if (favoriteProperties.contains(originalIndex)) {
+        favoriteProperties.remove(originalIndex);
+      } else {
+        favoriteProperties.add(originalIndex);
       }
     });
   }
@@ -721,14 +703,12 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: _selectedIndex == 0 ? AppBar(
         title: const Text('𝓡𝓮𝓷𝓽 & 𝓡𝓮𝓼𝓽', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
         centerTitle: true,
-        backgroundColor: Colors.blueAccent,
-        foregroundColor: Colors.white,
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             onPressed: () {
               Navigator.push(
                 context,
@@ -736,17 +716,14 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
                   builder: (context) => SearchRentalsPage(allProperties: allProperties),
                 ),
               );
-
             },
           ),
           IconButton(
-            icon: Icon(Icons.notifications),
-            onPressed: () {
-              // handle notification
-            },
+            icon: const Icon(Icons.notifications),
+            onPressed: () {},
           ),
         ],
-      ),
+      ) : null,
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -769,335 +746,59 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
                   const SizedBox(height: 10),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => LoginSignup()));
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const LoginSignup()));
                     },
-
-                    child: Text('Login/SignUp',
-                      style: const TextStyle(fontSize: 20, color: Colors.white,fontWeight: FontWeight.bold),
+                    child: const Text(
+                      'Login/SignUp',
+                      style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
               ),
-
             ),
-            ListTile(leading: Icon(Icons.category_outlined), title: Text('Category')),
-            ListTile(leading: Icon(Icons.local_activity), title: Text('Activity')),
-            ListTile(leading: Icon(Icons.wallet_outlined), title: Text('Wallet')),
-            ListTile(leading: Icon(Icons.language), title: Text('Change language')),
-            ListTile(leading: Icon(Icons.help_outline), title: Text('Help')),
+            ListTile(leading: const Icon(Icons.category_outlined), title: const Text('Category')),
+            ListTile(leading: const Icon(Icons.local_activity), title: const Text('Activity')),
+            ListTile(leading: const Icon(Icons.wallet_outlined), title: const Text('Wallet')),
+            ListTile(leading: const Icon(Icons.language), title: const Text('Change language')),
+            ListTile(leading: const Icon(Icons.help_outline), title: const Text('Help')),
             const Divider(),
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text('Are you a property owner ?', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
             ),
-            ListTile(leading: Icon(Icons.apartment_sharp), title: Text('List your property')),
+            const ListTile(leading: Icon(Icons.apartment_sharp), title: Text('List your property')),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
-
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => SettingsHome()));
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsHome()));
               },
             ),
-
-            ListTile(leading: Icon(Icons.logout_outlined), title: Text('Logout')),
+            const ListTile(leading: Icon(Icons.logout_outlined), title: const Text('Logout')),
           ],
         ),
       ),
-
-      body: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/back.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-        // ✅ Added background image here:
-        const AnimatedBackgroundpage(showPropertyCards: false),
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Filter UI
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Price Range: ₹${_currentRangeValues.start.toInt()} - ₹${_currentRangeValues.end.toInt()}'),
-                                RangeSlider(
-                                  values: _currentRangeValues,
-                                  min: _minPrice,
-                                  max: _maxPrice,
-                                  divisions: 100,
-                                  labels: RangeLabels(
-                                    '₹${_currentRangeValues.start.toInt()}',
-                                    '₹${_currentRangeValues.end.toInt()}',
-                                  ),
-                                  onChanged: (values) {
-                                    setState(() => _currentRangeValues = values);
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: DropdownButtonFormField<String>(
-                              decoration: InputDecoration(
-                                labelText: "Location",
-                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                              ),
-                              value: selectedLocation,
-                              items: ['Agra', 'Delhi', 'Mumbai', 'Bangalore']
-                                  .map((loc) => DropdownMenuItem(
-                                value: loc,
-                                child: Text(loc),
-                              ))
-                                  .toList(),
-                              onChanged: (value) => setState(() => selectedLocation = value),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      DropdownButtonFormField<String>(
-                        decoration: InputDecoration(
-                          labelText: "Type",
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                        ),
-                        value: selectedType,
-                        items: ['Villa', 'House', 'Apartment rooms', 'Hotel rooms']
-                            .map((type) => DropdownMenuItem(
-                          value: type,
-                          child: Text(type),
-                        ))
-                            .toList(),
-                        onChanged: (value) => setState(() => selectedType = value),
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(backgroundColor: Colors.blueAccent),
-                              onPressed: applyFilters,
-                              child: const Text('Apply Filters', style: TextStyle(color: Colors.white)),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
-                              onPressed: clearFilters,
-                              child: const Text('Clear Filters', style: TextStyle(color: Colors.white)),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const Divider(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  child: const Text(
-                    "Best offer for you",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Stack(
-                      children: [
-                        Image.asset('assets/images/offer2.jpg', height: 180, width: double.infinity, fit: BoxFit.cover),
-                        const Positioned(
-                          top: 20,
-                          right: 20,
-                          child: Text(
-                            'First book 30% off',
-                            style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-
-                          ),
-                        ),
-
-                        const Positioned(
-                          bottom: 20,
-                          right: 20,
-                          child: Text('Book Now',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Stack(
-                      children: [
-                        Image.asset('assets/images/offer1.jpg', height: 180, width: double.infinity, fit: BoxFit.cover),
-                        const Positioned(
-                          bottom: 20,
-                          left: 20,
-                          child: Text(
-                            'Book Now',
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        const Positioned(
-                          top: 20,
-                          left: 20,
-                          child: Text(
-                            'First book 50% off',
-                            style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: List.generate(
-                      displayedProperties.length,
-                          (index) {
-                        final property = displayedProperties[index];
-                        return AnimationConfiguration.staggeredList(
-                          position: index,
-                          duration: const Duration(milliseconds: 500),
-                          child: FlipAnimation(
-                            curve: Curves.easeInOut,
-                            child: FadeInAnimation(
-                              child: Card(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                elevation: 4,
-                                margin: const EdgeInsets.symmetric(vertical: 8),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InkWell(
-                                      onTap: ()
-                                      {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => VillaDetailPage(property: property),
-                                          ),
-                                        );
-                                      },
-                                      child: Stack(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
-                                            child: Image.asset(
-                                              property['image']!,
-                                              height: 200,
-                                              width: double.infinity,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                          Positioned(
-                                            top: 10,
-                                            right: 10,
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  if (favoriteProperties.contains(index)) {
-                                                    favoriteProperties.remove(index);
-                                                  } else {
-                                                    favoriteProperties.add(index);
-                                                  }
-                                                });
-                                                // Toggle favorite logic here
-                                              },
-                                              child: Icon(
-                                                favoriteProperties.contains(index) ? Icons.favorite : Icons.favorite_border,
-                                                color: favoriteProperties.contains(index) ? Colors.red : Colors.white,
-                                                size: 30,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-
-
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Price: ${property['price']}',
-                                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Text(
-                                            'Type: ${property['type']}',
-                                            style: const TextStyle(fontSize: 16),
-                                          ),
-                                          if ((property['bedrooms'] ?? '').isNotEmpty)
-                                            Padding(
-                                              padding: const EdgeInsets.only(top: 4),
-                                              child: Text(
-                                                property['bedrooms']!,
-                                                style: const TextStyle(fontSize: 16),
-                                              ),
-                                            ),
-                                          const SizedBox(height: 4),
-                                          const Text(
-                                            'More Details...',
-                                            style: TextStyle(fontSize: 14, color: Colors.blueAccent),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-    ],
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.blueAccent,
+        unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_filled),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag_rounded),
+            icon: Icon(Icons.favorite),
             label: 'Shortlist',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark_border),
+            icon: Icon(Icons.bookmark),
             label: 'Booking',
           ),
           BottomNavigationBarItem(
@@ -1105,14 +806,391 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
             label: 'You',
           ),
         ],
-
       ),
-
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blueAccent,
         foregroundColor: Colors.white,
-        onPressed: (){},
-        child: Icon(Icons.add),
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  /// This method now builds the entire scrollable body, including filters and offers.
+  Widget buildHomeContent() {
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/back.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: ArticleInspiredAnimatedList(
+        displayedProperties: displayedProperties,
+        allProperties: allProperties,
+        favoriteProperties: favoriteProperties,
+        onFavoriteToggled: _toggleFavorite,
+        // Passing the filter and offer widgets to be part of the scroll view
+        headerWidgets: [
+          _buildFilters(),
+          const Divider(),
+          ..._buildOffers(),
+          const Divider(),
+        ],
+      ),
+    );
+  }
+
+  /// Helper method to build the filter section UI
+  Widget _buildFilters() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Price Range: ₹${_currentRangeValues.start.toInt()} - ₹${_currentRangeValues.end.toInt()}'),
+                    RangeSlider(
+                      values: _currentRangeValues,
+                      min: _minPrice,
+                      max: _maxPrice,
+                      divisions: 100,
+                      labels: RangeLabels('₹${_currentRangeValues.start.toInt()}', '₹${_currentRangeValues.end.toInt()}'),
+                      onChanged: (values) {
+                        setState(() => _currentRangeValues = values);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    labelText: "Location",
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                  ),
+                  value: selectedLocation,
+                  items: ['Agra', 'Delhi', 'Mumbai', 'Bangalore']
+                      .map((loc) => DropdownMenuItem(value: loc, child: Text(loc)))
+                      .toList(),
+                  onChanged: (value) => setState(() => selectedLocation = value),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          DropdownButtonFormField<String>(
+            decoration: InputDecoration(labelText: "Type", border: OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
+            value: selectedType,
+            items: ['Villa', 'House', 'Apartment rooms', 'Hotel rooms']
+                .map((type) => DropdownMenuItem(value: type, child: Text(type)))
+                .toList(),
+            onChanged: (value) => setState(() => selectedType = value),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.blueAccent),
+                  onPressed: applyFilters,
+                  child: const Text('Apply Filters', style: TextStyle(color: Colors.white)),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+                  onPressed: clearFilters,
+                  child: const Text('Clear Filters', style: TextStyle(color: Colors.white)),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Helper method to build the offer section UI
+  List<Widget> _buildOffers() {
+    return [
+      const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Text(
+          "Best offer for you",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Stack(
+            children: [
+              Image.asset('assets/images/offer2.jpg', height: 180, width: double.infinity, fit: BoxFit.cover),
+              const Positioned(
+                top: 20,
+                right: 20,
+                child: Text('First book 30% off', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+              ),
+              const Positioned(
+                bottom: 20,
+                right: 20,
+                child: Text('Book Now', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              ),
+            ],
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Stack(
+            children: [
+              Image.asset('assets/images/offer1.jpg', height: 180, width: double.infinity, fit: BoxFit.cover),
+              const Positioned(
+                bottom: 20,
+                left: 20,
+                child: Text('Book Now', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              ),
+              const Positioned(
+                top: 20,
+                left: 20,
+                child: Text('First book 50% off', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ];
+  }
+}
+
+// =========================================================================
+// WIDGETS FOR THE ANIMATION LOGIC FROM THE MEDIUM ARTICLE
+// =========================================================================
+
+/// This widget uses a CustomScrollView to properly handle headers and the list.
+class ArticleInspiredAnimatedList extends StatelessWidget {
+  final List<Widget> headerWidgets;
+  final List<Map<String, String>> displayedProperties;
+  final List<Map<String, String>> allProperties;
+  final List<int> favoriteProperties;
+  final Function(int) onFavoriteToggled;
+
+  const ArticleInspiredAnimatedList({
+    Key? key,
+    required this.headerWidgets,
+    required this.displayedProperties,
+    required this.allProperties,
+    required this.favoriteProperties,
+    required this.onFavoriteToggled,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        SliverList(
+          delegate: SliverChildListDelegate(headerWidgets),
+        ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+                (context, index) {
+              final property = displayedProperties[index];
+              final originalIndex = allProperties.indexOf(property);
+
+              return AnimatedCard(
+                child: PropertyCard(
+                  property: property,
+                  originalIndex: originalIndex,
+                  favoriteProperties: favoriteProperties,
+                  onFavoriteToggled: onFavoriteToggled,
+                ),
+              );
+            },
+            childCount: displayedProperties.length,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// This widget wraps the card and applies the "fly-in" animation.
+class AnimatedCard extends StatefulWidget {
+  final Widget child;
+
+  const AnimatedCard({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
+
+  @override
+  _AnimatedCardState createState() => _AnimatedCardState();
+}
+
+class _AnimatedCardState extends State<AnimatedCard>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _animationController;
+  late final Animation<double> _scaleAnimation;
+  late final Animation<double> _rotateAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    )..forward();
+
+    _scaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeOut,
+      ),
+    );
+
+    // This creates the 3D rotation effect.
+    _rotateAnimation = Tween<double>(begin: math.pi / 4, end: 0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeOut,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animationController,
+      child: widget.child,
+      builder: (context, child) {
+        return Transform(
+          transform: Matrix4.identity()
+            ..setEntry(3, 2, 0.001) // Apply perspective
+            ..rotateX(_rotateAnimation.value), // Apply rotation
+          alignment: Alignment.center,
+          child: Transform.scale(
+            scale: _scaleAnimation.value, // Apply scaling
+            child: child,
+          ),
+        );
+      },
+    );
+  }
+}
+
+
+/// This is your original Card UI, now in its own stateless widget for clarity.
+class PropertyCard extends StatelessWidget {
+  final Map<String, String> property;
+  final int originalIndex;
+  final List<int> favoriteProperties;
+  final Function(int) onFavoriteToggled;
+
+  const PropertyCard({
+    Key? key,
+    required this.property,
+    required this.originalIndex,
+    required this.favoriteProperties,
+    required this.onFavoriteToggled,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+      child: Card(
+        clipBehavior: Clip.hardEdge,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        elevation: 5,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VillaDetailPage(property: property),
+                  ),
+                );
+              },
+              child: Stack(
+                children: [
+                  Hero(
+                    tag: property['image']!,
+                    child: Image.asset(
+                      property['image']!,
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Positioned(
+                    top: 10,
+                    right: 10,
+                    child: GestureDetector(
+                      onTap: () => onFavoriteToggled(originalIndex),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.black.withOpacity(0.4),
+                        child: Icon(
+                          favoriteProperties.contains(originalIndex)
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: favoriteProperties.contains(originalIndex)
+                              ? Colors.red
+                              : Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Price: ${property['price']}',
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Type: ${property['type']}',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  if ((property['bedrooms'] ?? '').isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: Text(
+                        property['bedrooms']!,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

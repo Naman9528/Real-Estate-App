@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tryhello/main.dart';
 import 'dart:ui';
-import 'dart:math';
 
 import '../animated_backgroundpage.dart'; // Ensure this path is correct
 import 'MyTransactionPage.dart';
@@ -39,11 +38,8 @@ class ProfileScreen extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => HomeScreen(
-                  selectedIndex: 0, // Default tab index for home
-                  allProperties: [], // Pass your properties list
-                  favoriteProperties: [], // Pass favorites if needed
-                ),
+                // **FIXED**: Removed the incorrect parameters from HomeScreen()
+                builder: (context) => const HomeScreen(),
               ),
             );
           },

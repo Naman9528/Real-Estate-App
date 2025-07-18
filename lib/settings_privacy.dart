@@ -25,12 +25,13 @@ class PrivacyPolicyPage extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           // 🌄 Animated Background
-          AnimatedBackgroundpage(showPropertyCards: false), // Use the animated background
+          const AnimatedBackgroundpage(showPropertyCards: false), // Use the animated background
 
           // 💠 Glassmorphism Container
-          Center(
+          // **FIXED**: Wrapped in SafeArea and removed the problematic Center widget.
+          SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: BackdropFilter(
