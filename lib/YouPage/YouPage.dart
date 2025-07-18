@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tryhello/main.dart';
 import 'dart:ui';
+import 'dart:math';
 
+import '../animated_backgroundpage.dart'; // Ensure this path is correct
 import 'MyTransactionPage.dart';
 import 'LocationPage.dart';
 import 'SubscriptionPage.dart';
@@ -30,19 +33,28 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text('Profile', style: TextStyle(color: Colors.black)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomeScreen(
+                  selectedIndex: 0, // Default tab index for home
+                  allProperties: [], // Pass your properties list
+                  favoriteProperties: [], // Pass favorites if needed
+                ),
+              ),
+            );
+          },
+        ),
+        title: const Text('Profile', style: TextStyle(color: Colors.black),
+        ),
         centerTitle: true,
       ),
       body: Stack(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/back.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          const AnimatedBackgroundpage(showPropertyCards: false), // Use the animated background
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),

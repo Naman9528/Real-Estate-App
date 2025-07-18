@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'animated_backgroundpage.dart'; // Import your animated background page
 
 class PrivacyPolicyPage extends StatelessWidget {
   const PrivacyPolicyPage({super.key});
@@ -23,16 +24,10 @@ class PrivacyPolicyPage extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Background Image or Color
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/back.jpg'), // Change this to your desired background
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          // Glassmorphism Container
+          // 🌄 Animated Background
+          AnimatedBackgroundpage(showPropertyCards: false), // Use the animated background
+
+          // 💠 Glassmorphism Container
           Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 32),

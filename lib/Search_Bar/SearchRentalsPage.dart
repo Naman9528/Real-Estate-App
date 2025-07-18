@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import '../animated_backgroundpage.dart';
+
 
 class SearchRentalsPage extends StatefulWidget {
   final List<Map<String, String>> allProperties;
@@ -46,12 +48,10 @@ class _SearchRentalsPageState extends State<SearchRentalsPage> {
       ),
       body: Stack(
         children: [
-          SizedBox.expand(
-            child: Image.asset(
-              'assets/images/back.jpg',
-              fit: BoxFit.cover,
-            ),
-          ),
+          // 🌄 Animated Background
+          AnimatedBackgroundpage(showPropertyCards: false), // Use the animated background
+
+          // Content Layer
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -190,7 +190,6 @@ class PropertyDetailsPage extends StatelessWidget {
             if (property['description'] != null)
               Text('Description: ${property['description']}'),
             const SizedBox(height: 24),
-
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(

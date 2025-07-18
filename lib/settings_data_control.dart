@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'animated_backgroundpage.dart'; // Import your animated background page
 
 class DataControlsPage extends StatefulWidget {
   @override
@@ -57,15 +58,8 @@ class _DataControlsPageState extends State<DataControlsPage> {
       ),
       body: Stack(
         children: [
-          // Background Image (optional)
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/back.jpg'), // optional background
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          // 🌄 Animated Background
+          AnimatedBackgroundpage(showPropertyCards: false), // Use the animated background
 
           // Glassmorphism effect
           BackdropFilter(

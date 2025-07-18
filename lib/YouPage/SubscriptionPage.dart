@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import 'dart:math';
+
+// Import your AnimatedBackgroundpage
+import '../animated_backgroundpage.dart'; // Ensure this path is correct
 
 class SubscriptionPage extends StatelessWidget {
   const SubscriptionPage({super.key});
@@ -23,15 +27,8 @@ class SubscriptionPage extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // Background image or gradient if you like
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/back.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          // Animated background
+          const AnimatedBackgroundpage(showPropertyCards: false), // Add the animated background here
 
           // Glassmorphism content
           SafeArea(

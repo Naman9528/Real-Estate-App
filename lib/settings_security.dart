@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'animated_backgroundpage.dart'; // Import your animated background page
 
 class SecurityPage extends StatefulWidget {
   const SecurityPage({super.key});
@@ -76,15 +77,8 @@ class _SecurityPageState extends State<SecurityPage> {
       ),
       body: Stack(
         children: [
-          // Background image or color
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/back.jpg'), // You can replace this with your background
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          // 🌄 Animated Background
+          AnimatedBackgroundpage(showPropertyCards: false), // Use the animated background
 
           // Glass effect container
           Center(

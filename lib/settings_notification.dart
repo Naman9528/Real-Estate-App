@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'animated_backgroundpage.dart'; // Import your animated background page
 
 class NotificationSettings extends StatefulWidget {
   const NotificationSettings({super.key});
@@ -33,17 +34,10 @@ class _NotificationSettingsState extends State<NotificationSettings> {
       ),
       body: Stack(
         children: [
-          // Background image (optional)
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/back.jpg'), // Your image path
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          // 🌄 Animated Background
+          AnimatedBackgroundpage(showPropertyCards: false), // Use the animated background
 
-          // Glassmorphic effect
+          // 💠 Glassmorphic effect
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0),
             child: Container(

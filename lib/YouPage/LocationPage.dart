@@ -7,7 +7,9 @@ class LocationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Location")),
-      body: const Center(child: Text("Location Page")),
+      body: const Center(child: Text("Location Page"),
+      ),
+
     );
   }
 }

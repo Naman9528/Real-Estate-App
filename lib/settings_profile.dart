@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
+import 'animated_backgroundpage.dart'; // Ensure this path is correct
+
 class ProfileSettings extends StatefulWidget {
   const ProfileSettings({super.key});
 
@@ -38,15 +40,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
       ),
       body: Stack(
         children: [
-          // Background image
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/back.jpg'), // Add your background image here
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          // Animated background
+          const AnimatedBackgroundpage(showPropertyCards: false), // Use the animated background
 
           // Frosted Glass Container with content
           SafeArea(

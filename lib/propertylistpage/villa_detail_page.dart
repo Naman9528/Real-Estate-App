@@ -45,6 +45,7 @@ class VillaDetailPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 20), // Space between AppBar and content
                   ClipRRect(
                     borderRadius: BorderRadius.circular(16),
                     child: Image.asset(

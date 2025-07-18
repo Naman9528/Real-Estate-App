@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import 'dart:math';
 
-// Import your GlassContainer from your app
-// Or place this widget directly in this file if needed
+// Import your AnimatedBackgroundpage from your app
+import '../animated_backgroundpage.dart'; // Ensure this path is correct
+
 class GlassContainer extends StatelessWidget {
   final Widget child;
   final double? height;
@@ -77,15 +79,8 @@ class ReviewsPage extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // Background image
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/back.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          // Animated background
+          const AnimatedBackgroundpage(showPropertyCards: false), // Add the animated background here
           // Glass content
           SafeArea(
             child: ListView.builder(

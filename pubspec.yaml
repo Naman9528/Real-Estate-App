@@ -66,47 +66,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/back.jpg
-    - assets/images/3 BHK room.jpg
-    - assets/images/agra apartment1.jpg
-    - assets/images/agra hotel.jpg
-    - assets/images/agra house2.jpg
-    - assets/images/appicon2.png
-    - assets/images/agra hotel room.jpg
-    - assets/images/bangalore hotel.jpg
-    - assets/images/bangalore hotel room.jpg
-    - assets/images/bangalore house1.jpg
-    - assets/images/bangalore house2.jpg
-    - assets/images/delhi apartment1.png
-    - assets/images/delhi apartment2.jpg
-    - assets/images/delhi house2.jpg
-    - assets/images/delhi villas.jpg
-    - assets/images/final.png
-    - assets/images/hillvilla.jpg
-    - assets/images/hotel room delhi.jpg
-    - assets/images/hotel room in delhi.jpg
-    - assets/images/house.jpg
-    - assets/images/house in agra.jpg
-    - assets/images/houses2.jpg
-    - assets/images/mumabi villa.jpg
-    - assets/images/mumbai apartment.jpg
-    - assets/images/mumbai apartment2.jpg
-    - assets/images/mumbai hotel.jpg
-    - assets/images/mumbai hotel1.jpg
-    - assets/images/mumbai house2.jpeg
-    - assets/images/night_house.jpg
-    - assets/images/offer1.jpg
-    - assets/images/offer2.jpg
-    - assets/images/room in delhi.jpg
-    - assets/images/rooms in agra.jpg
-    - assets/images/rooms in bangalore.jpg
-    - assets/images/villa.jpg
-    - assets/images/user.jpg
-    - assets/images/villa bangalore.jpg
-    - assets/images/villas in agra.jpg
-    - assets/images/villas in bangalore.jpg
-    - assets/images/villas in delhi.jpg
-    - assets/images/villas in mumbai.jpg
+    - assets/images/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
