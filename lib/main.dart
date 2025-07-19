@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tryhello/Login_Page/login_signup.dart';
+import 'package:tryhello/wallet.dart' hide AnimatedBackgroundpage;
 import 'dart:math' as math; // Added for 3D animation math
 import 'ShortlistPage.dart';
 import 'animated_backgroundpage.dart';
@@ -830,7 +831,14 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
             ListTile(leading: const Icon(Icons.local_activity),
                 title: const Text('Activity')),
             ListTile(leading: const Icon(Icons.wallet_outlined),
-                title: const Text('Wallet')),
+                title: const Text('Wallet'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => WalletPage()));
+              },
+
+
+            ),
             ListTile(leading: const Icon(Icons.language),
                 title: const Text('Change language')),
             ListTile(leading: const Icon(Icons.help_outline),
