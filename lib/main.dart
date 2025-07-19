@@ -3,6 +3,7 @@ import 'package:tryhello/Login_Page/login_signup.dart';
 import 'dart:math' as math; // Added for 3D animation math
 import 'ShortlistPage.dart';
 import 'animated_backgroundpage.dart';
+import 'help.dart';
 import 'propertydescriptions/villa_detail_page.dart';
 import 'settings_home.dart';
 import 'package:tryhello/Search_Bar/SearchRentalsPage.dart';
@@ -833,7 +834,14 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
             ListTile(leading: const Icon(Icons.language),
                 title: const Text('Change language')),
             ListTile(leading: const Icon(Icons.help_outline),
-                title: const Text('Help')),
+                title: const Text('Help'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => HelpCenterPage()));
+              },
+
+
+            ),
             const Divider(),
             const Padding(
               padding: EdgeInsets.all(8.0),
