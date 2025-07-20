@@ -1,6 +1,12 @@
+// --- FIX: Corrected import for Dart's UI library ---
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:provider/provider.dart';
+
+import '../models/property_model.dart';
+import '../providers/booking_provider.dart';
 
 class VillaDetailPage extends StatelessWidget {
   final Map<String, String> property;
@@ -11,7 +17,6 @@ class VillaDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        // Fullscreen background image from your assets
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/back.jpg'),
@@ -20,10 +25,9 @@ class VillaDetailPage extends StatelessWidget {
         ),
         child: CustomScrollView(
           slivers: [
-            // This SliverAppBar creates the cool collapsing image effect
             SliverAppBar(
               expandedHeight: 250.0,
-              pinned: true, // The app bar will remain visible as you scroll
+              pinned: true,
               backgroundColor: Colors.transparent,
               elevation: 0,
               flexibleSpace: FlexibleSpaceBar(
@@ -31,7 +35,6 @@ class VillaDetailPage extends StatelessWidget {
                 centerTitle: true,
                 title: Text(property['type'] ?? 'Details', style: const TextStyle(fontSize: 16.0, color: Colors.black, fontWeight: FontWeight.bold)),
                 background: Hero(
-                  // The Hero widget that enables the flying image animation
                   tag: property['image']!,
                   child: Image.asset(
                     property['image']!,
@@ -40,12 +43,10 @@ class VillaDetailPage extends StatelessWidget {
                 ),
               ),
             ),
-            // This holds the main content of the page
             SliverToBoxAdapter(
               child: AnimationLimiter(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  // The glossy, frosted glass container
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: BackdropFilter(
@@ -61,7 +62,6 @@ class VillaDetailPage extends StatelessWidget {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),
-                          // This animates all the content inside the glass container
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: AnimationConfiguration.toStaggeredList(
@@ -116,9 +116,22 @@ class VillaDetailPage extends StatelessWidget {
                                       ),
                                     ),
                                     onPressed: () {
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(content: Text('Buy Now clicked!')),
+                                      final propertyObject = Property(
+                                        title: property['type'] ?? 'Unknown Property',
+                                        price: property['price'] ?? 'N/A',
+                                        imageUrl: property['image'] ?? '',
                                       );
+
+                                      Provider.of<BookingProvider>(context, listen: false).addBooking(propertyObject);
+
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('✅ Added to My Bookings!'),
+                                          backgroundColor: Colors.green,
+                                        ),
+                                      );
+
+                                      Navigator.of(context).pop();
                                     },
                                     child: const Text(
                                       'Buy Now',

@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tryhello/Login_Page/login_signup.dart';
-import 'package:tryhello/property_listing_form.dart';
-import 'package:tryhello/user_properties_screen.dart';
-import 'package:tryhello/wallet.dart' hide AnimatedBackgroundpage;
 import 'dart:math' as math; // Added for 3D animation math
-import 'ShortlistPage.dart';
-import 'animated_backgroundpage.dart';
 
-import 'help.dart';
+import 'ShortlistPage.dart';
 import 'propertydescriptions/villa_detail_page.dart';
 import 'settings_home.dart';
 import 'package:tryhello/Search_Bar/SearchRentalsPage.dart';
@@ -95,19 +90,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   List<int> favoriteProperties = [];
-  List<Map<String, String>> userProperties = [];
-
-
-
 
   final List<Map<String, String>> allProperties = [
-    {
-      'image': 'assets/images/villa.jpg'
-      ,
-      'price': '₹ 85,00,000',
-      'type': 'Villa',
-      'bedrooms': '4 Rooms(in Ground floor)',
-      'location': 'Agra',
+    {'image': 'assets/images/villa.jpg'
+      , 'price': '₹ 85,00,000', 'type': 'Villa', 'bedrooms': '4 Rooms(in Ground floor)', 'location': 'Agra',
       'description': '''Experience luxury living in this stunning villa located in the heart of Agra. 
 Priced at ₹ 85,00,000, this property offers exceptional value for a spacious family home. 
 The villa features 4 generously sized rooms, all conveniently situated on the ground floor for easy access. 
@@ -118,13 +104,9 @@ A contemporary kitchen and stylish bathrooms add to the comfort and convenience 
 Located in a peaceful and secure neighborhood, you’ll have privacy and tranquility. 
 Proximity to Agra’s top schools, shopping centers, and major attractions makes daily life convenient. 
 This villa is an ideal choice for families seeking comfort, style, and a prestigious address in Agra. '''
+
     },
-    {
-      'image': 'assets/images/house.jpg',
-      'price': '₹ 90,00,000',
-      'type': 'house',
-      'bedrooms': '5 Rooms(in Ground floor)',
-      'location': 'Delhi',
+    {'image': 'assets/images/house.jpg', 'price': '₹ 90,00,000', 'type': 'house', 'bedrooms': '5 Rooms(in Ground floor)', 'location': 'Delhi',
       'description': '''Discover your dream home in the vibrant city of Delhi with this magnificent house. 
 Priced at ₹ 90,00,000, this property offers exceptional value for families seeking comfort and style. 
 The house features 5 spacious rooms, all conveniently located on the ground floor for easy accessibility. 
@@ -137,12 +119,7 @@ Situated in a prime Delhi neighborhood, you’ll enjoy proximity to top schools,
 This house is a rare opportunity for those who desire luxury, convenience, and a prestigious address in Delhi.''',
 
     },
-    {
-      'image': 'assets/images/houses2.jpg',
-      'price': '₹ 36,00,000',
-      'type': 'House',
-      'bedrooms': 'For Sale',
-      'location': 'Mumbai',
+    {'image': 'assets/images/houses2.jpg', 'price': '₹ 36,00,000', 'type': 'House', 'bedrooms': 'For Sale', 'location': 'Mumbai',
       'description': '''Presenting an excellent opportunity to own a beautiful house in the bustling city of Mumbai.
 Priced attractively at ₹ 36,00,000, this property is perfect for first-time buyers or investors.
 The house is currently available for sale and offers a flexible layout to suit your needs.
@@ -155,12 +132,7 @@ The house is ideal for families looking for a peaceful retreat amid the city’s
 Don’t miss this chance to own a home in Mumbai—schedule a visit and make it yours today!''',
 
     },
-    {
-      'image': 'assets/images/3 BHK room.jpg',
-      'price': '₹ 23,000/Month',
-      'type': 'Apartment rooms',
-      'bedrooms': '2 BHK',
-      'location': 'Bangalore',
+    {'image': 'assets/images/3 BHK room.jpg', 'price': '₹ 23,000/Month', 'type': 'Apartment rooms', 'bedrooms': '2 BHK', 'location': 'Bangalore',
       'description': '''Modern apartment located in the heart of Bangalore.
       Priced at ₹ 23,000 per month, offering excellent value.
       Spacious 2 BHK layout, ideal for small families or professionals.
@@ -172,12 +144,7 @@ Don’t miss this chance to own a home in Mumbai—schedule a visit and make it 
       Close to tech parks, shopping centers, and schools.
       A perfect choice for those seeking comfort and convenience in Bangalore.'''
     },
-    {
-      'image': 'assets/images/room in delhi.jpg',
-      'price': '₹ 32,000/month',
-      'type': 'Apartment rooms',
-      'bedrooms': '2 BHk',
-      'location': 'Delhi',
+    {'image': 'assets/images/room in delhi.jpg', 'price': '₹ 32,000/month', 'type': 'Apartment rooms', 'bedrooms': '2 BHk', 'location': 'Delhi',
       'description': '''
 Modern 2 BHK apartment available for rent in a prime Delhi location.
 Priced at ₹ 32,000 per month, offering great value for city living.
@@ -192,12 +159,7 @@ A perfect blend of comfort, convenience, and urban lifestyle in Delhi.
 ''',
 
     },
-    {
-      'image': 'assets/images/house in agra.jpg',
-      'price': '₹ 25,00,000',
-      'type': 'House',
-      'bedrooms': 'For Sale',
-      'location': 'Agra',
+    {'image': 'assets/images/house in agra.jpg', 'price': '₹ 25,00,000', 'type': 'House', 'bedrooms': 'For Sale', 'location': 'Agra',
       'description': '''
 Charming house for sale in a peaceful neighborhood of Agra.
 Attractive price of ₹ 25,00,000, making it a great investment.
@@ -212,13 +174,8 @@ An excellent opportunity to own a home in the historic city of Agra.
 ''',
 
     },
-    {
-      'image': 'assets/images/rooms in agra.jpg',
-      'price': '₹ 19,000/month',
-      'type': 'Apartment rooms',
-      'bedrooms': '2 BHK',
-      'location': 'Agra',
-      'description': '''Affordable 2 BHK apartment available for rent in Agra.
+    {'image': 'assets/images/rooms in agra.jpg', 'price': '₹ 19,000/month', 'type': 'Apartment rooms', 'bedrooms': '2 BHK', 'location': 'Agra',
+      'description':'''Affordable 2 BHK apartment available for rent in Agra.
     Priced at ₹ 19,000 per month, ideal for families or professionals.
     Spacious bedrooms designed for comfort and relaxation.
     Bright living area with ample natural light and ventilation.
@@ -229,12 +186,7 @@ An excellent opportunity to own a home in the historic city of Agra.
     Peaceful neighborhood offering a pleasant living environment.
     A perfect choice for those seeking comfort and convenience in Agra.'''
     },
-    {
-      'image': 'assets/images/rooms in bangalore.jpg',
-      'price': '₹ 25,000/month',
-      'type': 'Apartment rooms',
-      'bedrooms': '3 BHK',
-      'location': 'Bangalore',
+    {'image': 'assets/images/rooms in bangalore.jpg', 'price': '₹ 25,000/month', 'type': 'Apartment rooms', 'bedrooms': '3 BHK', 'location': 'Bangalore',
       'description': '''
 Spacious 3 BHK apartment available for rent in Bangalore.
 Priced at ₹ 25,000 per month, offering excellent value in a prime location.
@@ -248,12 +200,7 @@ Close to tech parks, schools, shopping centers, and public transport.
 A perfect blend of affordability, comfort, and urban lifestyle in Bangalore.
 ''',
     },
-    {
-      'image': 'assets/images/villas in agra.jpg',
-      'price': '₹ 50,00,000',
-      'type': 'Villa',
-      'bedrooms': '4 rooms(GroundFloor)',
-      'location': 'Agra',
+    {'image': 'assets/images/villas in agra.jpg', 'price': '₹ 50,00,000', 'type': 'Villa', 'bedrooms': '4 rooms(GroundFloor)', 'location': 'Agra',
       'description': '''
 Elegant villa for sale in Agra, offering a perfect blend of luxury and comfort.
 Priced at ₹ 50,00,000, this villa is an excellent investment in a prime location.
@@ -268,12 +215,7 @@ A rare opportunity to own a prestigious villa in the historic city of Agra.
 ''',
 
     },
-    {
-      'image': 'assets/images/villas in bangalore.jpg',
-      'price': '₹ 1,00,00,000',
-      'type': 'Villa',
-      'bedrooms': '6 rooms(GroundFloor)',
-      'location': 'Bangalore',
+    {'image': 'assets/images/villas in bangalore.jpg', 'price': '₹ 1,00,00,000', 'type': 'Villa', 'bedrooms': '6 rooms(GroundFloor)', 'location': 'Bangalore',
       'description': '''
 Luxurious villa for sale in Bangalore, designed for spacious and elegant living.
 Priced at ₹ 1,00,00,000, offering excellent value in a prime city location.
@@ -288,12 +230,7 @@ An exceptional opportunity to own a prestigious villa in the vibrant city of Ban
 ''',
 
     },
-    {
-      'image': 'assets/images/villas in delhi.jpg',
-      'price': '₹ 90,00,000',
-      'type': 'Villa',
-      'bedrooms': '5 rooms(GroundFloor)',
-      'location': 'Delhi',
+    {'image': 'assets/images/villas in delhi.jpg', 'price': '₹ 90,00,000', 'type': 'Villa', 'bedrooms': '5 rooms(GroundFloor)', 'location': 'Delhi',
       'description': '''
 Stunning villa for sale in Delhi, offering luxury and comfort in every corner.
 Priced at ₹ 90,00,000, this property is a remarkable investment in a prime area.
@@ -308,12 +245,7 @@ An exclusive opportunity to own a prestigious villa in the heart of Delhi.
 ''',
 
     },
-    {
-      'image': 'assets/images/villas in mumbai.jpg',
-      'price': '₹ 1,00,00,000',
-      'type': 'Villa',
-      'bedrooms': '7 rooms(GroundFloor)',
-      'location': 'Mumbai',
+    {'image': 'assets/images/villas in mumbai.jpg', 'price': '₹ 1,00,00,000', 'type': 'Villa', 'bedrooms': '7 rooms(GroundFloor)', 'location': 'Mumbai',
       'description': '''
 Magnificent villa for sale in Mumbai, offering unmatched luxury and space.
 Priced at ₹ 1,00,00,000, this property is a premium investment in a top location.
@@ -328,11 +260,7 @@ A rare opportunity to own an exclusive villa in the heart of Mumbai.
 ''',
 
     },
-    {
-      'image': 'assets/images/agra hotel room.jpg',
-      'price': '₹ 9,000/day',
-      'type': 'Hotel rooms',
-      'location': 'Agra',
+    {'image': 'assets/images/agra hotel room.jpg', 'price': '₹ 9,000/day', 'type': 'Hotel rooms', 'location': 'Agra',
       'description': '''
 Premium hotel room available in Agra, designed for comfort and relaxation.
 Priced at ₹ 9,000 per day, offering a luxurious stay near the city’s top attractions.
@@ -717,7 +645,6 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
     displayedProperties = List.from(allProperties);
   }
 
-
   List<Map<String, String>> getFavoriteProperties() {
     return favoriteProperties.map((index) => allProperties[index]).toList();
   }
@@ -741,14 +668,10 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
   void applyFilters() {
     setState(() {
       displayedProperties = allProperties.where((property) {
-        int numericPrice = int.tryParse(
-            property['price']!.replaceAll(RegExp(r'[^\d]'), '')) ?? 0;
-        final inRange = numericPrice >= _currentRangeValues.start &&
-            numericPrice <= _currentRangeValues.end;
-        final matchesLocation = selectedLocation == null ||
-            property['location'] == selectedLocation;
-        final matchesType = selectedType == null ||
-            property['type']?.toLowerCase() == selectedType!.toLowerCase();
+        int numericPrice = int.tryParse(property['price']!.replaceAll(RegExp(r'[^\d]'), '')) ?? 0;
+        final inRange = numericPrice >= _currentRangeValues.start && numericPrice <= _currentRangeValues.end;
+        final matchesLocation = selectedLocation == null || property['location'] == selectedLocation;
+        final matchesType = selectedType == null || property['type']?.toLowerCase() == selectedType!.toLowerCase();
         return inRange && matchesLocation && matchesType;
       }).toList();
     });
@@ -768,15 +691,13 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
     final List<Widget> pages = [
       buildHomeContent(),
       ShortlistPage(favoriteProperties: getFavoriteProperties()),
-      const Center(
-          child: Text("Bookings Page", style: TextStyle(fontSize: 24))),
+      const Center(child: Text("Bookings Page", style: TextStyle(fontSize: 24))),
       const YouPage(),
     ];
 
     return Scaffold(
       appBar: _selectedIndex == 0 ? AppBar(
-        title: const Text('𝓡𝓮𝓷𝓽 & 𝓡𝓮𝓼𝓽',
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+        title: const Text('𝓡𝓮𝓷𝓽 & 𝓡𝓮𝓼𝓽', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
         centerTitle: true,
         actions: [
           IconButton(
@@ -785,8 +706,7 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      SearchRentalsPage(allProperties: allProperties),
+                  builder: (context) => SearchRentalsPage(allProperties: allProperties),
                 ),
               );
             },
@@ -821,71 +741,35 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
                   const SizedBox(height: 10),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (_) => const LoginSignup()));
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const LoginSignup()));
                     },
                     child: const Text(
                       'Login/SignUp',
-                      style: TextStyle(fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
               ),
             ),
-            ListTile(leading: const Icon(Icons.category_outlined),
-                title: const Text('Category')),
-            ListTile(leading: const Icon(Icons.local_activity),
-                title: const Text('Activity')),
-            ListTile(leading: const Icon(Icons.wallet_outlined),
-                title: const Text('Wallet'),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => WalletPage()));
-              },
-
-
-            ),
-            ListTile(leading: const Icon(Icons.language),
-                title: const Text('Change language')),
-            ListTile(leading: const Icon(Icons.help_outline),
-                title: const Text('Help'),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => HelpCenterPage()));
-              },
-
-
-            ),
+            ListTile(leading: const Icon(Icons.category_outlined), title: const Text('Category')),
+            ListTile(leading: const Icon(Icons.local_activity), title: const Text('Activity')),
+            ListTile(leading: const Icon(Icons.wallet_outlined), title: const Text('Wallet')),
+            ListTile(leading: const Icon(Icons.language), title: const Text('Change language')),
+            ListTile(leading: const Icon(Icons.help_outline), title: const Text('Help')),
             const Divider(),
             const Padding(
               padding: EdgeInsets.all(8.0),
-              child: Text('Are you a property owner ?',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+              child: Text('Are you a property owner ?', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
             ),
-            ListTile(leading: const Icon(Icons.apartment_sharp),
-                title: const Text('List your property'),
-              onTap: () {
-                // Navigate to a new screen or show a dialog with user properties
-                Navigator.push(
-                  context,
-                   MaterialPageRoute(
-                    builder: (context) => UserPropertiesScreen(userProperties: userProperties),
-                  ),
-                );
-              },
-            ),
+            const ListTile(leading: Icon(Icons.apartment_sharp), title: Text('List your property')),
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Settings'),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => const SettingsHome()));
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsHome()));
               },
             ),
-            const ListTile(leading: Icon(Icons.logout_outlined),
-                title: const Text('Logout')),
+            const ListTile(leading: Icon(Icons.logout_outlined), title: const Text('Logout')),
           ],
         ),
       ),
@@ -921,20 +805,7 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blueAccent,
         foregroundColor: Colors.white,
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            builder: (context) {
-              return PropertyListingForm(
-                onSubmit: (property) {
-                  setState(() {
-                    userProperties.add(property); // Save the property
-                  });
-                },
-              );
-            },
-          );
-        },
+        onPressed: () {},
         child: const Icon(Icons.add),
       ),
     );
@@ -942,13 +813,15 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
 
   // This method builds the main home screen content
   Widget buildHomeContent() {
-    return Stack(
-        children: [
-
-        // Animated background (full screen)
-        AnimatedBackgroundpage(showPropertyCards: false),
-    CustomScrollView(
-      physics: const BouncingScrollPhysics(),
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/back.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      // **REPLACED ListView with CustomScrollView for better performance and structure**
+      child: CustomScrollView(
         slivers: [
           // Sliver 1: All the widgets that come before the list
           SliverToBoxAdapter(
@@ -1196,7 +1069,6 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
           ),
         ],
       ),
-    ],
     );
   }
 }
