@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:tryhello/Login_Page/login_signup.dart';
+import 'package:tryhello/property_listing_form.dart';
+import 'package:tryhello/user_properties_screen.dart';
 import 'package:tryhello/wallet.dart' hide AnimatedBackgroundpage;
 import 'dart:math' as math; // Added for 3D animation math
 import 'ShortlistPage.dart';
 import 'animated_backgroundpage.dart';
+
 import 'help.dart';
 import 'propertydescriptions/villa_detail_page.dart';
 import 'settings_home.dart';
@@ -92,6 +95,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   List<int> favoriteProperties = [];
+  List<Map<String, String>> userProperties = [];
+
+
+
 
   final List<Map<String, String>> allProperties = [
     {
@@ -710,6 +717,7 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
     displayedProperties = List.from(allProperties);
   }
 
+
   List<Map<String, String>> getFavoriteProperties() {
     return favoriteProperties.map((index) => allProperties[index]).toList();
   }
@@ -856,8 +864,18 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
               child: Text('Are you a property owner ?',
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
             ),
-            const ListTile(leading: Icon(Icons.apartment_sharp),
-                title: Text('List your property')),
+            ListTile(leading: const Icon(Icons.apartment_sharp),
+                title: const Text('List your property'),
+              onTap: () {
+                // Navigate to a new screen or show a dialog with user properties
+                Navigator.push(
+                  context,
+                   MaterialPageRoute(
+                    builder: (context) => UserPropertiesScreen(userProperties: userProperties),
+                  ),
+                );
+              },
+            ),
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Settings'),
@@ -903,7 +921,20 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blueAccent,
         foregroundColor: Colors.white,
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return PropertyListingForm(
+                onSubmit: (property) {
+                  setState(() {
+                    userProperties.add(property); // Save the property
+                  });
+                },
+              );
+            },
+          );
+        },
         child: const Icon(Icons.add),
       ),
     );
@@ -919,6 +950,7 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
     CustomScrollView(
       physics: const BouncingScrollPhysics(),
         slivers: [
+          // Sliver 1: All the widgets that come before the list
           SliverToBoxAdapter(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

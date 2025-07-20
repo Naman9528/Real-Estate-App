@@ -37,9 +37,9 @@ class ProfileScreen extends StatelessWidget {
           onPressed: () {
             Navigator.pushReplacement(
               context,
+              // **FIXED**: Removed the incorrect parameters from HomeScreen()
               MaterialPageRoute(
-                // **FIXED**: Removed the incorrect parameters from HomeScreen()
-                builder: (context) => const HomeScreen(),
+                 builder: (context) => const HomeScreen(),
               ),
             );
           },
