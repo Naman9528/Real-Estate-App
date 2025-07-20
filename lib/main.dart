@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:tryhello/BookingPage/booking.dart';
 import 'package:tryhello/Login_Page/login_signup.dart';
 import 'package:tryhello/help.dart';
+import 'package:tryhello/property_listing_form.dart';
 import 'package:tryhello/providers/booking_provider.dart';
+import 'package:tryhello/user_properties_screen.dart';
 import 'dart:math' as math; // Added for 3D animation math
 
 import 'ShortlistPage.dart';
@@ -99,6 +101,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<Map<String, String>> userProperties = [];
   int _selectedIndex = 0;
   List<int> favoriteProperties = [];
 
@@ -792,7 +795,19 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
               padding: EdgeInsets.all(8.0),
               child: Text('Are you a property owner ?', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
             ),
-            const ListTile(leading: Icon(Icons.apartment_sharp), title: Text('List your property')),
+            ListTile(leading: const Icon(Icons.apartment_sharp),
+              title: const Text('List your property'),
+                onTap: () {
+                  // Navigate to a new screen or show a dialog with user properties
+                  Navigator.push(
+                    context,
+                     MaterialPageRoute(
+                      builder: (context) => UserPropertiesScreen(userProperties: userProperties),
+                    ),
+                  );
+                }
+
+            ),
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Settings'),
@@ -836,7 +851,20 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blueAccent,
         foregroundColor: Colors.white,
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return PropertyListingForm(
+                onSubmit: (property) {
+                  setState(() {
+                    userProperties.add(property); // Save the property
+                  });
+                },
+              );
+            },
+          );
+        },
         child: const Icon(Icons.add),
       ),
     );
