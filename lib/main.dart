@@ -12,7 +12,7 @@ import 'settings_home.dart';
 import 'package:tryhello/Search_Bar/SearchRentalsPage.dart';
 import 'package:tryhello/YouPage/YouPage.dart';
 import 'package:tryhello/wallet.dart';
-
+import 'animated_backgroundpage.dart';
 
 void main() {
   runApp(

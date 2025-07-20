@@ -13,7 +13,16 @@ class BookingPage extends StatelessWidget {
         backgroundColor: Colors.blueAccent,
       ),
       // Use a Consumer widget to listen for changes in the BookingProvider
-      body: Consumer<BookingProvider>(
+      body:Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/images/back.jpg'),
+          fit: BoxFit.cover
+          ),
+        ),
+
+      child:
+      Consumer<BookingProvider>(
         builder: (context, provider, child) {
           // Get the list of booked properties from the provider
           final bookedList = provider.bookedProperties;
@@ -23,7 +32,7 @@ class BookingPage extends StatelessWidget {
             return const Center(
               child: Text(
                 'You have no bookings yet.',
-                style: TextStyle(fontSize: 18, color: Colors.grey),
+                style: TextStyle(fontSize: 18, color: Colors.black),
               ),
             );
           }
@@ -81,6 +90,7 @@ class BookingPage extends StatelessWidget {
           );
         },
       ),
+      )
     );
   }
 }
