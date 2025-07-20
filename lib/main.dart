@@ -11,7 +11,7 @@ import 'propertydescriptions/villa_detail_page.dart';
 import 'settings_home.dart';
 import 'package:tryhello/Search_Bar/SearchRentalsPage.dart';
 import 'package:tryhello/YouPage/YouPage.dart';
-import 'package:tryhello/wallet.dart';
+import 'package:tryhello/wallet.dart' hide AnimatedBackgroundpage;
 import 'animated_backgroundpage.dart';
 
 void main() {
@@ -700,7 +700,7 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
-      buildHomeContent(),
+     buildHomeContent(),
       ShortlistPage(favoriteProperties: getFavoriteProperties()),
      // const Center(child: Text("Bookings Page", style: TextStyle(fontSize: 24))),
       const BookingPage(),
@@ -844,15 +844,10 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
 
   // This method builds the main home screen content
   Widget buildHomeContent() {
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/images/back.jpg'),
-          fit: BoxFit.cover,
-        ),
-      ),
-      // **REPLACED ListView with CustomScrollView for better performance and structure**
-      child: CustomScrollView(
+    return Stack(
+      children: [
+        const AnimatedBackgroundpage(showPropertyCards: false),
+        CustomScrollView(
         slivers: [
           // Sliver 1: All the widgets that come before the list
           SliverToBoxAdapter(
@@ -1100,6 +1095,7 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
           ),
         ],
       ),
+    ],
     );
   }
 }

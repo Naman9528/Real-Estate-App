@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:tryhello/propertydescriptions/villa_detail_page.dart';
 import 'dart:ui';
 
+import 'main.dart';
+
 class ShortlistPage extends StatelessWidget {
   final List<Map<String, String>> favoriteProperties;
 
@@ -16,6 +18,18 @@ class ShortlistPage extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),
         ),
         backgroundColor: Colors.blueAccent,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                // **FIXED**: Removed the incorrect parameters from HomeScreen()
+                builder: (context) => const HomeScreen(),
+              ),
+            );
+          },
+        ),
       ),
       body: Stack(
         children: [

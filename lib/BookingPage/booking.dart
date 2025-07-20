@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tryhello/main.dart';
 import '../providers/booking_provider.dart';
 
 class BookingPage extends StatelessWidget {
@@ -11,6 +12,18 @@ class BookingPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("My Bookings"),
         backgroundColor: Colors.blueAccent,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                // **FIXED**: Removed the incorrect parameters from HomeScreen()
+                builder: (context) => const HomeScreen(),
+              ),
+            );
+          },
+        ),
       ),
       // Use a Consumer widget to listen for changes in the BookingProvider
       body:Container(
