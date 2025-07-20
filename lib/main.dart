@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tryhello/BookingPage/booking.dart';
 import 'package:tryhello/Login_Page/login_signup.dart';
+import 'package:tryhello/help.dart';
+import 'package:tryhello/providers/booking_provider.dart';
 import 'dart:math' as math; // Added for 3D animation math
 
 import 'ShortlistPage.dart';
@@ -7,10 +11,17 @@ import 'propertydescriptions/villa_detail_page.dart';
 import 'settings_home.dart';
 import 'package:tryhello/Search_Bar/SearchRentalsPage.dart';
 import 'package:tryhello/YouPage/YouPage.dart';
+import 'package:tryhello/wallet.dart';
 
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+        create: (context) => BookingProvider(),
+      child:
+      const MyApp(),
+    )
+    );
 }
 
 class MyApp extends StatelessWidget {
@@ -691,7 +702,8 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
     final List<Widget> pages = [
       buildHomeContent(),
       ShortlistPage(favoriteProperties: getFavoriteProperties()),
-      const Center(child: Text("Bookings Page", style: TextStyle(fontSize: 24))),
+     // const Center(child: Text("Bookings Page", style: TextStyle(fontSize: 24))),
+      const BookingPage(),
       const YouPage(),
     ];
 
@@ -753,9 +765,28 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
             ),
             ListTile(leading: const Icon(Icons.category_outlined), title: const Text('Category')),
             ListTile(leading: const Icon(Icons.local_activity), title: const Text('Activity')),
-            ListTile(leading: const Icon(Icons.wallet_outlined), title: const Text('Wallet')),
+            ListTile(
+                leading: const Icon(Icons.wallet_outlined),
+                title: const Text('Wallet'),
+                onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const WalletPage()),
+                );
+
+    }
+            ),
             ListTile(leading: const Icon(Icons.language), title: const Text('Change language')),
-            ListTile(leading: const Icon(Icons.help_outline), title: const Text('Help')),
+            ListTile(
+                leading: const Icon(Icons.help_outline),
+                title: const Text('Help'),
+              onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) =>  HelpCenterPage()),
+                  );
+              },
+            ),
             const Divider(),
             const Padding(
               padding: EdgeInsets.all(8.0),
