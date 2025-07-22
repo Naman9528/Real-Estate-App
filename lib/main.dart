@@ -6,7 +6,7 @@ import 'package:tryhello/help.dart';
 import 'package:tryhello/property_listing_form.dart';
 import 'package:tryhello/providers/booking_provider.dart';
 import 'package:tryhello/user_properties_screen.dart';
-import 'dart:math' as math; // Added for 3D animation math
+import 'dart:math' as math;
 
 import 'ShortlistPage.dart';
 import 'propertydescriptions/villa_detail_page.dart';
