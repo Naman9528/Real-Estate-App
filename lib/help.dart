@@ -59,7 +59,7 @@ class HelpCenterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Help Center'),
+        title: Text('Help Center',style: TextStyle(fontWeight: FontWeight.bold),),
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),

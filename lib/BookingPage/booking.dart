@@ -12,7 +12,7 @@ class BookingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Bookings"),
+        title: const Text("My Bookings",style: TextStyle(fontWeight: FontWeight.bold),),
         backgroundColor: Colors.blueAccent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),

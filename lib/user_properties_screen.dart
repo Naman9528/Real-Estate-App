@@ -18,7 +18,7 @@ class _UserPropertiesScreenState extends State<UserPropertiesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Your Listed Properties')),
+      appBar: AppBar(title: const Text('Your Listed Properties',style: TextStyle(fontWeight: FontWeight.bold),)),
       body: Stack(
         children: [
           AnimatedBackgroundpage(),  // Add the animated background here

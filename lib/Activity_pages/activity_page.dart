@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import '../animated_backgroundpage.dart';
 import 'activity_model.dart';
+ // Import the file where AnimatedBackgroundpage is defined
 
 class ActivityPage extends StatelessWidget {
   final List<Activity> activities;
@@ -10,23 +12,32 @@ class ActivityPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Activity Log'),
+        title: Text('Activity', style: TextStyle(fontWeight: FontWeight.bold),),
       ),
-      body: ListView.builder(
-        itemCount: activities.length,
-        itemBuilder: (context, index) {
-          final activity = activities[index];
-          return ListTile(
-            leading: Image.asset(
-              activity.imagePath,
-              width: 50,
-              height: 50,
-              fit: BoxFit.cover,
+      body: Stack(
+        children: [
+          // Use the AnimatedBackgroundpage as the background
+          AnimatedBackgroundpage(showPropertyCards: false),
+          // Overlay the activity list on top
+          Container(
+            child: ListView.builder(
+              itemCount: activities.length,
+              itemBuilder: (context, index) {
+                final activity = activities[index];
+                return ListTile(
+                  leading: Image.asset(
+                    activity.imagePath,
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                  ),
+                  title: Text(activity.description, style: TextStyle(color: Colors.white)), // Change text color for visibility
+                  subtitle: Text(activity.timestamp.toString(), style: TextStyle(color: Colors.white70)), // Change text color for visibility
+                );
+              },
             ),
-            title: Text(activity.description),
-            subtitle: Text(activity.timestamp.toString()),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
