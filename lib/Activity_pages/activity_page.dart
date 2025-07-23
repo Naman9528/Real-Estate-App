@@ -31,8 +31,8 @@ class ActivityPage extends StatelessWidget {
                     height: 50,
                     fit: BoxFit.cover,
                   ),
-                  title: Text(activity.description, style: TextStyle(color: Colors.white)), // Change text color for visibility
-                  subtitle: Text(activity.timestamp.toString(), style: TextStyle(color: Colors.white70)), // Change text color for visibility
+                  title: Text(activity.description, style: TextStyle(color: Colors.black)), // Change text color for visibility
+                  subtitle: Text(activity.timestamp.toString(), style: TextStyle(color: Colors.black)), // Change text color for visibility
                 );
               },
             ),
