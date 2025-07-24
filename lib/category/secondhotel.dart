@@ -116,7 +116,7 @@ class _HotelDetailPageState extends State<RatnadeepPage> {
                 ),
               ),
 
-              // Top Amenities
+
               Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 20, vertical: 12),

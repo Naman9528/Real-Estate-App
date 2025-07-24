@@ -18,7 +18,7 @@ class _HotelDetailPageState extends State<BhagsuPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // Hotel Image with heart icon
+
               Stack(
                 children: [
                   ClipRRect(

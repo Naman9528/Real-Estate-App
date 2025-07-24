@@ -62,7 +62,7 @@ class _HotelDetailPageState extends State<NovotelPage> {
                 ],
               ),
 
-              // Amenities Row
+
               Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: 16, horizontal: 20),

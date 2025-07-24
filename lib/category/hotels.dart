@@ -135,7 +135,7 @@ class _HotelListPageState extends State<HotelListpage> {
       }).toList();
     }
 
-    // Apply Price Sorting
+
     if (selectedSort == 'Price (Low to High)') {
       filteredHotels.sort((a, b) =>
           extractPrice(a['price']!).compareTo(extractPrice(b['price']!)));

@@ -154,7 +154,7 @@ class _HotelDetailPageState extends State<HostellerPage> {
                 ),
               ),
 
-              // Preview Images
+
               Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 20, vertical: 12),

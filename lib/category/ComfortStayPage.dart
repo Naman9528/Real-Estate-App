@@ -27,7 +27,7 @@ class _HomeScreenState extends State<CategoryHomeScreen> {
     return Scaffold(
       body: Column(
         children: [
-          // search bar
+
           Container(
             height: 150,
             padding: const EdgeInsets.only(top: 60, left: 10, right: 16),

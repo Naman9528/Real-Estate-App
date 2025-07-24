@@ -99,7 +99,7 @@ class _HotelDetailPageState extends State<RoseatePage> {
                 ),
               ),
 
-              // Location
+
               Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 20, vertical: 8),
