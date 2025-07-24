@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../animated_backgroundpage.dart';
 import 'activity_model.dart';
- // Import the file where AnimatedBackgroundpage is defined
+// Import the file where AnimatedBackgroundpage is defined
 
 class ActivityPage extends StatelessWidget {
   final List<Activity> activities;

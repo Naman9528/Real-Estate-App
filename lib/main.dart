@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tryhello/BookingPage/booking.dart';
@@ -6,10 +7,13 @@ import 'package:tryhello/help.dart';
 import 'package:tryhello/property_listing_form.dart';
 import 'package:tryhello/providers/booking_provider.dart';
 import 'package:tryhello/user_properties_screen.dart';
-import 'package:tryhello/category/ComfortStayPage.dart';
-import 'dart:math' as math; // Added for 3D animation math
+import 'dart:math' as math;
 
+
+import 'Activity_pages/activity_model.dart';
+import 'Activity_pages/activity_page.dart';
 import 'ShortlistPage.dart';
+import 'category/ComfortStayPage.dart';
 import 'propertydescriptions/villa_detail_page.dart';
 import 'settings_home.dart';
 import 'package:tryhello/Search_Bar/SearchRentalsPage.dart';
@@ -17,14 +21,16 @@ import 'package:tryhello/YouPage/YouPage.dart';
 import 'package:tryhello/wallet.dart' hide AnimatedBackgroundpage;
 import 'animated_backgroundpage.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
-    ChangeNotifierProvider(
+      ChangeNotifierProvider(
         create: (context) => BookingProvider(),
-      child:
-      const MyApp(),
-    )
-    );
+        child:
+        const MyApp(),
+      )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -45,6 +51,8 @@ class MyApp extends StatelessWidget {
       home: const LogoAnimationPage(),
     );
   }
+
+
 }
 
 class LogoAnimationPage extends StatefulWidget {
@@ -105,6 +113,19 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Map<String, String>> userProperties = [];
   int _selectedIndex = 0;
   List<int> favoriteProperties = [];
+  List<Activity> activities = [];
+
+
+  void logActivity(String description, String imagePath) {
+    setState(() {
+      activities.add(Activity(description: description, imagePath: imagePath));
+    });
+  }
+
+  // Example of logging an activity when a property is viewed
+  void onPropertyViewed(String propertyName, String imagePath) {
+    logActivity('Viewed property: $propertyName', imagePath);
+  }
 
   final List<Map<String, String>> allProperties = [
     {'image': 'assets/images/villa.jpg'
@@ -704,9 +725,9 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
   @override
   Widget build(BuildContext context) {
     final List<Widget> pages = [
-     buildHomeContent(),
+      buildHomeContent(),
       ShortlistPage(favoriteProperties: getFavoriteProperties()),
-     // const Center(child: Text("Bookings Page", style: TextStyle(fontSize: 24))),
+      // const Center(child: Text("Bookings Page", style: TextStyle(fontSize: 24))),
       const BookingPage(),
       const YouPage(),
     ];
@@ -767,38 +788,45 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
                 ],
               ),
             ),
-            ListTile(
-                leading: const Icon(Icons.category_outlined),
-                title: const Text('Category'),
-                onTap: () {
-                  Navigator.push(
+            ListTile(leading: const Icon(Icons.category_outlined), title: const Text('Category'),
+              onTap: () {
+                Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const CategoryHomeScreen()),
-                  );
-                },
+                );
+              },
+
             ),
-            ListTile(leading: const Icon(Icons.local_activity), title: const Text('Activity')),
+            ListTile(leading: const Icon(Icons.local_activity), title: const Text('Activity'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ActivityPage(activities: activities),
+                  ),
+                );
+              },
+
+            ),
             ListTile(
                 leading: const Icon(Icons.wallet_outlined),
                 title: const Text('Wallet'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const WalletPage()),
-                    );
-
-                  }
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const WalletPage()),
+                  );
+                }
             ),
-            ListTile(leading: const Icon(Icons.language), title: const Text('Change language')),
             ListTile(
-                leading: const Icon(Icons.help_outline),
-                title: const Text('Help'),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) =>  HelpCenterPage()),
-                    );
-                  },
+              leading: const Icon(Icons.help_outline),
+              title: const Text('Help'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>  HelpCenterPage()),
+                );
+              },
             ),
             const Divider(),
             const Padding(
@@ -806,26 +834,26 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
               child: Text('Are you a property owner ?', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
             ),
             ListTile(leading: const Icon(Icons.apartment_sharp),
-              title: const Text('List your property'),
+                title: const Text('List your property'),
                 onTap: () {
                   // Navigate to a new screen or show a dialog with user properties
                   Navigator.push(
                     context,
-                     MaterialPageRoute(
+                    MaterialPageRoute(
                       builder: (context) => UserPropertiesScreen(userProperties: userProperties),
                     ),
                   );
                 }
+
             ),
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Settings'),
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsHome()));
-                },
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsHome()));
+              },
             ),
             const ListTile(leading: Icon(Icons.logout_outlined), title: const Text('Logout')),
-
           ],
         ),
       ),
@@ -875,7 +903,7 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
             },
           );
         },
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.camera_alt_outlined),
       ),
     );
   }
@@ -886,254 +914,255 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
       children: [
         const AnimatedBackgroundpage(showPropertyCards: false),
         CustomScrollView(
-        slivers: [
-          // Sliver 1: All the widgets that come before the list
-          SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Filter UI
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Price Range: ₹${_currentRangeValues.start.toInt()} - ₹${_currentRangeValues.end.toInt()}'),
-                                RangeSlider(
-                                  values: _currentRangeValues,
-                                  min: _minPrice,
-                                  max: _maxPrice,
-                                  divisions: 100,
-                                  labels: RangeLabels(
-                                    '₹${_currentRangeValues.start.toInt()}',
-                                    '₹${_currentRangeValues.end.toInt()}',
-                                  ),
-                                  onChanged: (values) {
-                                    setState(() => _currentRangeValues = values);
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: DropdownButtonFormField<String>(
-                              decoration: InputDecoration(
-                                labelText: "Location",
-                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                              ),
-                              value: selectedLocation,
-                              items: ['Agra', 'Delhi', 'Mumbai', 'Bangalore']
-                                  .map((loc) => DropdownMenuItem(
-                                value: loc,
-                                child: Text(loc),
-                              ))
-                                  .toList(),
-                              onChanged: (value) => setState(() => selectedLocation = value),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      DropdownButtonFormField<String>(
-                        decoration: InputDecoration(
-                          labelText: "Type",
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                        ),
-                        value: selectedType,
-                        items: ['Villa', 'House', 'Apartment rooms', 'Hotel rooms']
-                            .map((type) => DropdownMenuItem(
-                          value: type,
-                          child: Text(type),
-                        ))
-                            .toList(),
-                        onChanged: (value) => setState(() => selectedType = value),
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(backgroundColor: Colors.blueAccent),
-                              onPressed: applyFilters,
-                              child: const Text('Apply Filters', style: TextStyle(color: Colors.white)),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
-                              onPressed: clearFilters,
-                              child: const Text('Clear Filters', style: TextStyle(color: Colors.white)),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const Divider(),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  child: Text(
-                    "Best offer for you",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Stack(
+          slivers: [
+            // Sliver 1: All the widgets that come before the list
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Filter UI
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
                       children: [
-                        Image.asset('assets/images/offer2.jpg', height: 180, width: double.infinity, fit: BoxFit.cover),
-                        const Positioned(
-                          top: 20,
-                          right: 20,
-                          child: Text('First book 30% off', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-                        ),
-                        const Positioned(
-                          bottom: 20,
-                          right: 20,
-                          child: Text('Book Now', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Stack(
-                      children: [
-                        Image.asset('assets/images/offer1.jpg', height: 180, width: double.infinity, fit: BoxFit.cover),
-                        const Positioned(
-                          bottom: 20,
-                          left: 20,
-                          child: Text('Book Now', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                        ),
-                        const Positioned(
-                          top: 20,
-                          left: 20,
-                          child: Text('First book 50% off', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // Sliver 2: The animated list of properties
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                final property = displayedProperties[index];
-                final originalIndex = allProperties.indexOf(property);
-
-                // **ADDED**: The new 3D "fly-in" animation wrapper
-                return FlyInAnimation(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                    child: Card(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      elevation: 4,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => VillaDetailPage(property: property),
-                                ),
-                              );
-                            },
-                            child: Stack(
-                              children: [
-                                Hero(
-                                  tag: property['image']!,
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
-                                    child: Image.asset(
-                                      property['image']!,
-                                      height: 200,
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Price Range: ₹${_currentRangeValues.start.toInt()} - ₹${_currentRangeValues.end.toInt()}'),
+                                  RangeSlider(
+                                    values: _currentRangeValues,
+                                    min: _minPrice,
+                                    max: _maxPrice,
+                                    divisions: 100,
+                                    labels: RangeLabels(
+                                      '₹${_currentRangeValues.start.toInt()}',
+                                      '₹${_currentRangeValues.end.toInt()}',
                                     ),
+                                    onChanged: (values) {
+                                      setState(() => _currentRangeValues = values);
+                                    },
                                   ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: DropdownButtonFormField<String>(
+                                decoration: InputDecoration(
+                                  labelText: "Location",
+                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                                 ),
-                                Positioned(
-                                  top: 10,
-                                  right: 10,
-                                  child: GestureDetector(
-                                    onTap: () => _toggleFavorite(originalIndex),
-                                    child: CircleAvatar(
-                                      backgroundColor: Colors.black.withOpacity(0.4),
-                                      child: Icon(
-                                        favoriteProperties.contains(originalIndex)
-                                            ? Icons.favorite
-                                            : Icons.favorite_border,
-                                        color: favoriteProperties.contains(originalIndex)
-                                            ? Colors.red
-                                            : Colors.white,
-                                        size: 24,
+                                value: selectedLocation,
+                                items: ['Agra', 'Delhi', 'Mumbai', 'Bangalore']
+                                    .map((loc) => DropdownMenuItem(
+                                  value: loc,
+                                  child: Text(loc),
+                                ))
+                                    .toList(),
+                                onChanged: (value) => setState(() => selectedLocation = value),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            labelText: "Type",
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                          ),
+                          value: selectedType,
+                          items: ['Villa', 'House', 'Apartment rooms', 'Hotel rooms']
+                              .map((type) => DropdownMenuItem(
+                            value: type,
+                            child: Text(type),
+                          ))
+                              .toList(),
+                          onChanged: (value) => setState(() => selectedType = value),
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(backgroundColor: Colors.blueAccent),
+                                onPressed: applyFilters,
+                                child: const Text('Apply Filters', style: TextStyle(color: Colors.white)),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+                                onPressed: clearFilters,
+                                child: const Text('Clear Filters', style: TextStyle(color: Colors.white)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Divider(),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    child: Text(
+                      "Best offer for you",
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Stack(
+                        children: [
+                          Image.asset('assets/images/offer2.jpg', height: 180, width: double.infinity, fit: BoxFit.cover),
+                          const Positioned(
+                            top: 20,
+                            right: 20,
+                            child: Text('First book 30% off', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+                          ),
+                          const Positioned(
+                            bottom: 20,
+                            right: 20,
+                            child: Text('Book Now', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Stack(
+                        children: [
+                          Image.asset('assets/images/offer1.jpg', height: 180, width: double.infinity, fit: BoxFit.cover),
+                          const Positioned(
+                            bottom: 20,
+                            left: 20,
+                            child: Text('Book Now', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          ),
+                          const Positioned(
+                            top: 20,
+                            left: 20,
+                            child: Text('First book 50% off', style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Sliver 2: The animated list of properties
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                  final property = displayedProperties[index];
+                  final originalIndex = allProperties.indexOf(property);
+
+                  // **ADDED**: The new 3D "fly-in" animation wrapper
+                  return FlyInAnimation(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                      child: Card(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        elevation: 4,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                onPropertyViewed(property['type']!, property['image']!);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => VillaDetailPage(property: property),
+                                  ),
+                                );
+                              },
+                              child: Stack(
+                                children: [
+                                  Hero(
+                                    tag: property['image']!,
+                                    child: ClipRRect(
+                                      borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+                                      child: Image.asset(
+                                        property['image']!,
+                                        height: 200,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Price: ${property['price']}',
-                                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  'Type: ${property['type']}',
-                                  style: const TextStyle(fontSize: 16),
-                                ),
-                                if ((property['bedrooms'] ?? '').isNotEmpty)
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 4),
-                                    child: Text(
-                                      property['bedrooms']!,
-                                      style: const TextStyle(fontSize: 16),
+                                  Positioned(
+                                    top: 10,
+                                    right: 10,
+                                    child: GestureDetector(
+                                      onTap: () => _toggleFavorite(originalIndex),
+                                      child: CircleAvatar(
+                                        backgroundColor: Colors.black.withOpacity(0.4),
+                                        child: Icon(
+                                          favoriteProperties.contains(originalIndex)
+                                              ? Icons.favorite
+                                              : Icons.favorite_border,
+                                          color: favoriteProperties.contains(originalIndex)
+                                              ? Colors.red
+                                              : Colors.white,
+                                          size: 24,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                const SizedBox(height: 4),
-                                const Text(
-                                  'More Details...',
-                                  style: TextStyle(fontSize: 14, color: Colors.blueAccent),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Price: ${property['price']}',
+                                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'Type: ${property['type']}',
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                  if ((property['bedrooms'] ?? '').isNotEmpty)
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 4),
+                                      child: Text(
+                                        property['bedrooms']!,
+                                        style: const TextStyle(fontSize: 16),
+                                      ),
+                                    ),
+                                  const SizedBox(height: 4),
+                                  const Text(
+                                    'More Details...',
+                                    style: TextStyle(fontSize: 14, color: Colors.blueAccent),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-              childCount: displayedProperties.length,
+                  );
+                },
+                childCount: displayedProperties.length,
+              ),
             ),
-          ),
-        ],
-      ),
-    ],
+          ],
+        ),
+      ],
     );
   }
 }

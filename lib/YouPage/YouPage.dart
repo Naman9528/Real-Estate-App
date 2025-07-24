@@ -75,18 +75,18 @@ class ProfileScreen extends StatelessWidget {
                                 );
                               },
                             ),
-                            const SizedBox(height: 20),
-                            ProfileTile(
-                              title: "Location",
-                              icon: Icons.location_on,
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const LocationPage()),
-                                );
-                              },
-                            ),
+                            // const SizedBox(height: 20),
+                            // ProfileTile(
+                            //   title: "Location",
+                            //   icon: Icons.location_on,
+                            //   onTap: () {
+                            //     Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //           builder: (context) => const LocationPage()),
+                            //     );
+                            //   },
+                            // ),
                             const SizedBox(height: 20),
                             ProfileTile(
                               title: "Subscription",
