@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tryhello/BookingPage/booking.dart';
@@ -7,11 +6,9 @@ import 'package:tryhello/help.dart';
 import 'package:tryhello/property_listing_form.dart';
 import 'package:tryhello/providers/booking_provider.dart';
 import 'package:tryhello/user_properties_screen.dart';
-import 'dart:math' as math;
+import 'package:tryhello/category/ComfortStayPage.dart';
+import 'dart:math' as math; // Added for 3D animation math
 
-
-import 'Activity_pages/activity_model.dart';
-import 'Activity_pages/activity_page.dart';
 import 'ShortlistPage.dart';
 import 'propertydescriptions/villa_detail_page.dart';
 import 'settings_home.dart';
@@ -20,9 +17,7 @@ import 'package:tryhello/YouPage/YouPage.dart';
 import 'package:tryhello/wallet.dart' hide AnimatedBackgroundpage;
 import 'animated_backgroundpage.dart';
 
-void main() async{
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+void main() {
   runApp(
     ChangeNotifierProvider(
         create: (context) => BookingProvider(),
@@ -50,8 +45,6 @@ class MyApp extends StatelessWidget {
       home: const LogoAnimationPage(),
     );
   }
-
-
 }
 
 class LogoAnimationPage extends StatefulWidget {
@@ -112,19 +105,6 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Map<String, String>> userProperties = [];
   int _selectedIndex = 0;
   List<int> favoriteProperties = [];
-  List<Activity> activities = [];
-
-
-  void logActivity(String description, String imagePath) {
-    setState(() {
-      activities.add(Activity(description: description, imagePath: imagePath));
-    });
-  }
-
-  // Example of logging an activity when a property is viewed
-  void onPropertyViewed(String propertyName, String imagePath) {
-    logActivity('Viewed property: $propertyName', imagePath);
-  }
 
   final List<Map<String, String>> allProperties = [
     {'image': 'assets/images/villa.jpg'
@@ -787,37 +767,38 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
                 ],
               ),
             ),
-            ListTile(leading: const Icon(Icons.category_outlined), title: const Text('Category')),
-            ListTile(leading: const Icon(Icons.local_activity), title: const Text('Activity'),
-              onTap: () {
-                Navigator.push(
+            ListTile(
+                leading: const Icon(Icons.category_outlined),
+                title: const Text('Category'),
+                onTap: () {
+                  Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => ActivityPage(activities: activities),
-                  ),
-                );
-              },
-
+                  MaterialPageRoute(builder: (context) => const CategoryHomeScreen()),
+                  );
+                },
             ),
+            ListTile(leading: const Icon(Icons.local_activity), title: const Text('Activity')),
             ListTile(
                 leading: const Icon(Icons.wallet_outlined),
                 title: const Text('Wallet'),
-                onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const WalletPage()),
-                );
-    }
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const WalletPage()),
+                    );
+
+                  }
             ),
+            ListTile(leading: const Icon(Icons.language), title: const Text('Change language')),
             ListTile(
                 leading: const Icon(Icons.help_outline),
                 title: const Text('Help'),
-              onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) =>  HelpCenterPage()),
-                  );
-              },
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) =>  HelpCenterPage()),
+                    );
+                  },
             ),
             const Divider(),
             const Padding(
@@ -835,16 +816,16 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
                     ),
                   );
                 }
-
             ),
             ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Settings'),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsHome()));
-              },
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsHome()));
+                },
             ),
             const ListTile(leading: Icon(Icons.logout_outlined), title: const Text('Logout')),
+
           ],
         ),
       ),
@@ -894,7 +875,7 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
             },
           );
         },
-        child: const Icon(Icons.camera_alt_outlined),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -1068,7 +1049,6 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
                         children: [
                           InkWell(
                             onTap: () {
-                              onPropertyViewed(property['type']!, property['image']!);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

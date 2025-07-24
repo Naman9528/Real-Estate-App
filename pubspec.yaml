@@ -32,6 +32,9 @@ dependencies:
     sdk: flutter
   glossy: ^0.0.5
   provider: ^6.1.2
+  intl: ^0.18.1 #new
+  url_launcher: ^6.1.14 #new
+
 
 
 
