@@ -768,7 +768,7 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children:[
                   const SizedBox(height: 27),
                   const CircleAvatar(
                     radius: 30,
