@@ -1,8 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tryhello/animated_backgroundpage.dart' as animated_bg;
-
-import '../main.dart'; // Use alias
+import '../main.dart'; // Import to access HomeScreen
 
 void main() {
   runApp(const LoginSignup());
@@ -13,12 +12,7 @@ class LoginSignup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Modern Glass Login',
-      theme: ThemeData.dark(),
-      debugShowCheckedModeBanner: false,
-      home: const AuthPage(),
-    );
+    return const AuthPage();
   }
 }
 
@@ -47,10 +41,8 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-
         children: [
           const animated_bg.AnimatedBackgroundpage(), // Use the alias here
-
           // Glassmorphic Layer
           Center(
             child: ClipRRect(
@@ -58,10 +50,7 @@ class _AuthPageState extends State<AuthPage> {
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
                 child: Container(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.85,
+                  width: MediaQuery.of(context).size.width * 0.85,
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.4),
@@ -81,14 +70,12 @@ class _AuthPageState extends State<AuthPage> {
                           ),
                         ),
                         const SizedBox(height: 24),
-
                         // Email
                         TextField(
                           controller: emailController,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            prefixIcon: const Icon(
-                                Icons.email, color: Colors.white),
+                            prefixIcon: const Icon(Icons.email, color: Colors.white),
                             hintText: 'Email',
                             hintStyle: const TextStyle(color: Colors.white70),
                             filled: true,
@@ -99,17 +86,14 @@ class _AuthPageState extends State<AuthPage> {
                             ),
                           ),
                         ),
-
                         const SizedBox(height: 16),
-
                         // Password
                         TextField(
                           controller: passwordController,
                           obscureText: true,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            prefixIcon: const Icon(
-                                Icons.lock, color: Colors.white),
+                            prefixIcon: const Icon(Icons.lock, color: Colors.white),
                             hintText: 'Password',
                             hintStyle: const TextStyle(color: Colors.white70),
                             filled: true,
@@ -120,7 +104,6 @@ class _AuthPageState extends State<AuthPage> {
                             ),
                           ),
                         ),
-
                         if (!isLogin) ...[
                           const SizedBox(height: 16),
                           TextField(
@@ -128,8 +111,7 @@ class _AuthPageState extends State<AuthPage> {
                             obscureText: true,
                             style: const TextStyle(color: Colors.white),
                             decoration: InputDecoration(
-                              prefixIcon: const Icon(
-                                  Icons.lock_outline, color: Colors.white),
+                              prefixIcon: const Icon(Icons.lock_outline, color: Colors.white),
                               hintText: 'Confirm Password',
                               hintStyle: const TextStyle(color: Colors.white70),
                               filled: true,
@@ -141,27 +123,24 @@ class _AuthPageState extends State<AuthPage> {
                             ),
                           ),
                         ],
-
                         const SizedBox(height: 24),
-
                         // Login/Signup Button
                         ElevatedButton(
                           onPressed: () {
-                            if (emailController.text.isEmpty ||
-                                passwordController.text.isEmpty) {
+                            if (emailController.text.isEmpty || passwordController.text.isEmpty) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Please fill in all fields')),
+                                const SnackBar(content: Text('Please fill in all fields')),
                               );
-                            } else if (!isLogin &&
-                                passwordController.text !=
-                                    confirmPasswordController.text) {
+                            } else if (!isLogin && passwordController.text != confirmPasswordController.text) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Passwords do not match')),
+                                const SnackBar(content: Text('Passwords do not match')),
                               );
                             } else {
-                              // TODO: handle login/signup
+                              // Navigate to the homepage (HomeScreen) on successful validation
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(builder: (context) => const HomeScreen()),
+                              );
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -174,16 +153,12 @@ class _AuthPageState extends State<AuthPage> {
                           ),
                           child: Text(isLogin ? 'Login' : 'Sign Up'),
                         ),
-
                         const SizedBox(height: 16),
-
                         Text(
                           isLogin ? 'Or login with' : 'Or sign up with',
                           style: const TextStyle(color: Colors.white60),
                         ),
-
                         const SizedBox(height: 16),
-
                         // Google Button
                         ElevatedButton.icon(
                           onPressed: () {},
@@ -197,9 +172,7 @@ class _AuthPageState extends State<AuthPage> {
                             ),
                           ),
                         ),
-
                         const SizedBox(height: 12),
-
                         // Toggle Login/Signup
                         TextButton(
                           onPressed: () {
@@ -208,9 +181,7 @@ class _AuthPageState extends State<AuthPage> {
                             });
                           },
                           child: Text(
-                            isLogin
-                                ? "Don't have an account? Sign Up"
-                                : "Already have an account? Login",
+                            isLogin ? "Don't have an account? Sign Up" : "Already have an account? Login",
                             style: const TextStyle(color: Colors.black),
                           ),
                         ),

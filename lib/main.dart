@@ -8,8 +8,6 @@ import 'package:tryhello/property_listing_form.dart';
 import 'package:tryhello/providers/booking_provider.dart';
 import 'package:tryhello/user_properties_screen.dart';
 import 'dart:math' as math;
-
-
 import 'Activity_pages/activity_model.dart';
 import 'Activity_pages/activity_page.dart';
 import 'ShortlistPage.dart';
@@ -20,6 +18,7 @@ import 'package:tryhello/Search_Bar/SearchRentalsPage.dart';
 import 'package:tryhello/YouPage/YouPage.dart';
 import 'package:tryhello/wallet.dart' hide AnimatedBackgroundpage;
 import 'animated_backgroundpage.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart'; // Import the package
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -778,7 +777,7 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
                   const SizedBox(height: 10),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => const LoginSignup()));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginSignup()));
                     },
                     child: const Text(
                       'Login/SignUp',
@@ -861,30 +860,19 @@ A unique opportunity to own a 6-room house in Bangalore at this price point.
         index: _selectedIndex,
         children: pages,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.blueAccent,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Shortlist',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
-            label: 'Booking',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'You',
-          ),
+      bottomNavigationBar: CurvedNavigationBar(
+        backgroundColor: Colors.transparent,
+        color: Colors.blueAccent,
+        buttonBackgroundColor: Colors.blueAccent,
+        height: 60,
+        index: _selectedIndex,
+        items: const <Widget>[
+          Icon(Icons.home_filled, size: 30, ),
+          Icon(Icons.favorite, size: 30),
+          Icon(Icons.bookmark, size: 30),
+          Icon(Icons.person, size: 30),
         ],
+        onTap: _onItemTapped,
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blueAccent,
