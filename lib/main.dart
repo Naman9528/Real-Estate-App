@@ -20,6 +20,7 @@ import 'package:tryhello/wallet.dart' hide AnimatedBackgroundpage;
 import 'animated_backgroundpage.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart'; // Import the package
 
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -328,24 +329,24 @@ Perfect for travelers who desire comfort, privacy, and world-class hospitality i
 ''',
 
     },
-    {'image': 'assets/images/hotel room in delhi.jpg',
-      'price': '₹ 9,800/day',
-      'type': 'Hotel rooms',
-      'location': 'Delhi',
-      'description': '''
-Luxurious hotel room available in the heart of Delhi for ₹ 9,800 per day.
-Spacious and elegantly furnished to provide maximum comfort and relaxation.
-Modern amenities including high-speed Wi-Fi, smart TV, and air conditioning.
-Large windows offer stunning city views and plenty of natural light.
-Premium bedding and plush mattresses ensure a restful night's sleep.
-En-suite bathroom with quality toiletries, rain shower, and modern fittings.
-24/7 room service, daily housekeeping, and attentive hotel staff for your convenience.
-Access to exclusive hotel facilities such as swimming pool, spa, and fitness center.
-Located close to major attractions, business hubs, and shopping districts.
-Ideal for business travelers and tourists seeking a premium stay experience in Delhi.
-''',
-
-    },
+//     {'image': 'assets/images/hotel room in delhi.jpg',
+//       'price': '₹ 9,800/day',
+//       'type': 'Hotel rooms',
+//       'location': 'Delhi',
+//       'description': '''
+// Luxurious hotel room available in the heart of Delhi for ₹ 9,800 per day.
+// Spacious and elegantly furnished to provide maximum comfort and relaxation.
+// Modern amenities including high-speed Wi-Fi, smart TV, and air conditioning.
+// Large windows offer stunning city views and plenty of natural light.
+// Premium bedding and plush mattresses ensure a restful night's sleep.
+// En-suite bathroom with quality toiletries, rain shower, and modern fittings.
+// 24/7 room service, daily housekeeping, and attentive hotel staff for your convenience.
+// Access to exclusive hotel facilities such as swimming pool, spa, and fitness center.
+// Located close to major attractions, business hubs, and shopping districts.
+// Ideal for business travelers and tourists seeking a premium stay experience in Delhi.
+// ''',
+//
+//     },
     {'image': 'assets/images/hotel room delhi.jpg',
       'price': '₹ 10,200/day',
       'type': 'Hotel rooms',
