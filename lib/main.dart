@@ -22,7 +22,7 @@ import 'package:tryhello/wallet.dart' hide AnimatedBackgroundpage;
 import 'animated_backgroundpage.dart';
 
 void main() async{
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized() ;
   await Firebase.initializeApp();
   runApp(
       ChangeNotifierProvider(
